@@ -1,0 +1,35 @@
+/node_modules
+/public/hot
+/public/storage
+/public/uploads
+/storage/*.key
+/storage/dotenv-editor
+/storage/framework/laravel-excel
+/storage/debugbar
+/storage/installed
+/vendor
+/.idea
+/.vscode
+/.fleet
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+error_log
+*.log
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# Cache files
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
