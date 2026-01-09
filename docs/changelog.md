@@ -1,5 +1,367 @@
 # QwikTest - Changelog
 
+## [January 8-9, 2026] - UI Consistency & Mock Page Restructuring
+
+### 🎯 Overview
+Renamed UI labels for consistency (Skill → Mock, Quizzes → Mocks) and restructured the Mock page to group tests by parent Category (Subject) instead of SubCategory (Mock Type). This provides better subject-based navigation for students preparing for specific topics.
+
+---
+
+### 🔄 UI Label Consistency Updates
+
+#### 1. Admin Sidebar - "Quizzes" → "Mocks"
+**Problem:** Inconsistent terminology across the platform. The term "Quizzes" was used in admin navigation while "Mock" was used elsewhere.
+
+**Solution:** Updated admin sidebar to use consistent "Mocks" terminology.
+
+**Files Modified:**
+- `resources/js/Layouts/AdminLayout.vue` (Line 216)
+- All compiled admin JavaScript files in `public/js/` (100+ files automatically updated via webpack compilation)
+
+**Code Changed:**
+```vue
+// AdminLayout.vue - Line 216
+items:[
+    {
+        label:'Mocks',  // Was: 'Quizzes'
+        url: route('quizzes.index'),
+    },
+]
+```
+
+**Impact:** Consistent terminology throughout the admin interface, reducing confusion for administrators.
+
+---
+
+#### 2. Import Questions Page - "Skill" → "Mock"
+**Problem:** The Import Questions page used "Skill" label, which was confusing and inconsistent with the mock test terminology used elsewhere.
+
+**Solution:** Updated both the label and placeholder text to use "Mock" instead of "Skill".
+
+**Files Modified:**
+- `resources/js/Pages/Admin/ImportQuestions.vue` (Lines 48, 50)
+
+**Code Changed:**
+```vue
+// Line 48: Label updated
+<label>{{ __("Choose Mock") }}</label>  
+<!-- Was: "Choose Skill" -->
+
+// Line 50: Placeholder updated
+:placeholder="__('Search') + ' ' + __('Mock')"
+<!-- Was: __('Search') + ' ' + __('Skill') -->
+```
+
+**Impact:** Clear, consistent terminology when importing questions for mock tests. Administrators now immediately understand they're selecting a mock test, not a skill category.
+
+---
+
+### 📊 Mock Page Restructuring
+
+#### Problem Statement
+The Mock page was previously grouping tests by **SubCategory** (e.g., "Mock Test 1", "Mock Test 2"), which meant students had to browse through mock test types rather than by subject areas. This was unintuitive for students who think in terms of "I want to practice Accountancy" rather than "I want Mock Test 1".
+
+**User Request:** "category -> ke bases mai mock show krna hai -> rename category -> Subject"
+- Translation: Show mocks grouped by Category (which represents Subject like Accountancy, Economics)
+- Rename the prop from "category" to "subject" for semantic clarity
+
+#### Solution Implemented
+Completely restructured the Mock page to:
+1. Group mocks by parent **Category** (subjects like Accountancy, Economics, Maths)
+2. Load quizzes through nested relationships: Category → SubCategories → Quizzes
+3. Flatten all quizzes from sub-categories under each parent category
+4. Rename props from "category" to "subject" for clarity
+
+---
+
+#### Backend Changes
+
+**File:** `app/Http/Controllers/User/MockController.php` (Complete rewrite)
+
+**What Changed:**
+1. **Model Switch:** Changed from `SubCategory` to `Category` model
+2. **Query Restructuring:** Added nested eager loading to fetch quizzes through sub-categories
+3. **Data Transformation:** Used `flatMap` to combine all quizzes from sub-categories
+4. **Prop Renaming:** Changed 'category' prop to 'subject'
+
+**Before:**
+```php
+use App\Models\SubCategory;
+
+$subjects = SubCategory::active()
+    ->whereHas('quizzes', function ($query) {
+        $query->has('questions')->isPublic()->published();
+    })
+    ->with(['quizzes' => function ($query) {
+        $query->has('questions')->isPublic()->published();
+    }])
+    ->get();
+
+$sections = $subjects->map(function (SubCategory $subject) {
+    return [
+        'name' => $subject->name,
+        'mocks' => $subject->quizzes
+    ];
+});
+
+return Inertia::render('User/Mock', [
+    'category' => $selected,
+    'sections' => $sections,
+]);
+```
+
+**After:**
+```php
+use App\Models\Category;
+
+$subjects = Category::active()
+    ->whereHas('subCategories.quizzes', function ($query) {
+        $query->has('questions')->isPublic()->published();
+    })
+    ->with(['subCategories' => function ($query) {
+        $query->whereHas('quizzes', function ($q) {
+            $q->has('questions')->isPublic()->published();
+        })
+        ->with(['quizzes' => function ($q) {
+            $q->has('questions')
+                ->isPublic()
+                ->published()
+                ->orderBy('is_paid', 'asc')
+                ->orderBy('title', 'asc')
+                ->select(['id', 'title', 'slug', 'is_paid', 'sub_category_id']);
+        }]);
+    }])
+    ->get();
+
+$sections = $subjects->map(function (Category $subject) {
+    // Flatten quizzes from all sub-categories
+    $allMocks = $subject->subCategories->flatMap(function ($subCategory) {
+        return $subCategory->quizzes;
+    });
+
+    return [
+        'id' => $subject->id,
+        'name' => $subject->name,
+        'slug' => $subject->slug,
+        'mocks' => $allMocks
+    ];
+});
+
+return Inertia::render('User/Mock', [
+    'subject' => $selected,  // Renamed from 'category'
+    'sections' => $sections,
+]);
+```
+
+**Key Technical Details:**
+
+1. **Nested Eager Loading:**
+```php
+Category::with(['subCategories.quizzes'])
+```
+This loads:
+- Categories (Accountancy, Economics, etc.)
+- Their SubCategories (Mock Test 1, Mock Test 2, etc.)
+- Quizzes under each SubCategory
+
+2. **FlatMap Usage:**
+```php
+$allMocks = $subject->subCategories->flatMap(function ($subCategory) {
+    return $subCategory->quizzes;
+});
+```
+Combines all quizzes from different sub-categories into a single collection under each subject.
+
+3. **Query Optimization:**
+- Uses `whereHas` to filter only categories that have quizzes
+- Adds `select()` to limit columns loaded
+- Maintains ordering (free first, then paid; alphabetically)
+
+---
+
+#### Frontend Changes
+
+**File:** `resources/js/Pages/User/Mock.vue`
+
+**What Changed:**
+1. **Prop Renaming:** Changed `category` to `subject` in props definition
+2. **Template Updates:** Updated all references in template from `category` to `subject`
+
+**Before:**
+```vue
+<script>
+export default {
+    props: {
+        category: {
+            type: Object,
+            default: null,
+        },
+        sections: {
+            type: Array,
+            required: true,
+        },
+    }
+}
+</script>
+
+<template>
+    <p v-if="category && category.name">
+        {{ __("Selected syllabus of your choice") }}
+    </p>
+</template>
+```
+
+**After:**
+```vue
+<script>
+export default {
+    props: {
+        subject: {
+            type: Object,
+            default: null,
+        },
+        sections: {
+            type: Array,
+            required: true,
+        },
+    }
+}
+</script>
+
+<template>
+    <p v-if="subject && subject.name">
+        {{ __("Selected syllabus of your choice") }}
+    </p>
+</template>
+```
+
+**Impact:** Frontend now correctly receives and displays subject-based grouping. The prop name "subject" is more semantically accurate than "category" for this context.
+
+---
+
+### 📦 Data Structure Comparison
+
+**Before (SubCategory-based):**
+```
+Mock Page Sections:
+├── Mock Test 1
+│   ├── Quiz A (BST)
+│   ├── Quiz B (Accountancy)
+│   └── Quiz C (Economics)
+├── Mock Test 2
+│   ├── Quiz D (BST)
+│   └── Quiz E (Accountancy)
+```
+
+**After (Category-based):**
+```
+Mock Page Sections:
+├── Accountancy
+│   ├── Quiz B (from Mock Test 1)
+│   └── Quiz E (from Mock Test 2)
+├── BST
+│   ├── Quiz A (from Mock Test 1)
+│   └── Quiz D (from Mock Test 2)
+├── Economics
+│   └── Quiz C (from Mock Test 1)
+```
+
+---
+
+### 🎯 User Experience Improvements
+
+**Before:**
+- Student thinks: "I need to practice Accountancy"
+- Reality: Must browse through "Mock Test 1", "Mock Test 2", etc. to find Accountancy quizzes
+- **Friction:** Multiple clicks, unclear which mock has which subject
+
+**After:**
+- Student thinks: "I need to practice Accountancy"
+- Reality: Clicks on "Accountancy" section, sees all available Accountancy mocks
+- **Seamless:** Direct navigation to desired subject
+
+---
+
+### 🗄️ Database Impact
+
+**No database migrations required!**
+
+**Why:** 
+- Only changed query logic, not schema
+- Category and SubCategory relationships already existed
+- Leveraged existing Eloquent relationships
+
+**Benefits:**
+- Zero downtime
+- No migration rollback concerns
+- Backwards compatible with existing data
+
+---
+
+### 🧪 Testing Recommendations
+
+1. **Verify Mock Grouping:** 
+   - Navigate to Mock page
+   - Confirm mocks are grouped by subject (Accountancy, Economics, etc.)
+   - Verify all quizzes from different mock types appear under correct subject
+
+2. **Check Admin Labels:**
+   - Login as admin
+   - Verify sidebar shows "Mocks" instead of "Quizzes"
+   - Check Import Questions page shows "Choose Mock"
+
+3. **Test Data Loading:**
+   - Ensure nested relationships load correctly
+   - Verify performance with multiple categories/sub-categories
+   - Check free/paid sorting still works
+
+4. **Frontend Compilation:**
+   - Run `npm run production` to compile assets
+   - Clear browser cache to see updates
+   - Test on different browsers
+
+---
+
+### 📊 Technical Metrics
+
+**Files Modified:** 4 source files (1 controller, 1 layout, 2 pages)
+**Compiled Files Updated:** 100+ JavaScript bundles (automatic via webpack)
+**Lines of Code Changed:** ~80 lines
+**Backend Changes:** 1 controller (complete rewrite)
+**Frontend Changes:** 1 layout component, 2 page components
+**Database Migrations:** 0
+
+---
+
+### 🔮 Future Enhancements
+
+Potential additions based on current foundation:
+- Add breadcrumb navigation: Home → Subjects → Subject Name → Quiz
+- Filter by paid/free within each subject section
+- Sort subjects alphabetically or by popularity
+- Add subject description/info cards
+- Show quiz count per subject
+
+---
+
+### ✅ Code Quality
+
+**Standards Maintained:**
+- Consistent naming conventions (subject vs category clarity)
+- Proper Eloquent relationship usage
+- Efficient query loading with eager loading
+- No N+1 query problems
+- Clean component structure
+
+---
+
+**Deployment Date:** January 9, 2026  
+**Breaking Changes:** None (backwards compatible)  
+**Migration Required:** No  
+**Frontend Recompilation Required:** Yes (`npm run production`)
+
+---
+
 ## [January 1-2, 2026] - Client Feedback & Refinements
 
 ### 🎯 Overview
