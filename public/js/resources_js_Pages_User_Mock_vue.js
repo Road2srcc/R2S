@@ -739,7 +739,7 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    category: {
+    subject: {
       type: Object,
       "default": null
     },
@@ -2349,7 +2349,7 @@ var render = function () {
               ),
             ]),
             _vm._v(" "),
-            _vm.category && _vm.category.name
+            _vm.subject && _vm.subject.name
               ? _c("p", { staticClass: "mt-1 text-sm text-gray-500" }, [
                   _vm._v(
                     "\n                    " +

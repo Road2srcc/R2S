@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\SubCategory;
+use App\Models\Category;
 use Inertia\Inertia;
 
 class MockController extends Controller
@@ -15,30 +15,39 @@ class MockController extends Controller
 
     public function index()
     {
-        // Still require a selected syllabus (middleware), but show all available subjects/mocks like a shop.
+        // Group mocks by parent category (subject)
         $selected = auth()->user()->selectedSyllabus();
 
-        $subjects = SubCategory::active()
-            ->whereHas('quizzes', function ($query) {
+        $subjects = Category::active()
+            ->whereHas('subCategories.quizzes', function ($query) {
                 $query->has('questions')->isPublic()->published();
             })
-            ->with(['quizzes' => function ($query) {
-                $query->has('questions')
-                    ->isPublic()
-                    ->published()
-                    ->orderBy('is_paid', 'asc')
-                    ->orderBy('title', 'asc')
-                    ->get(['id', 'title', 'slug', 'is_paid', 'sub_category_id']);
+            ->with(['subCategories' => function ($query) {
+                $query->whereHas('quizzes', function ($q) {
+                    $q->has('questions')->isPublic()->published();
+                })
+                ->with(['quizzes' => function ($q) {
+                    $q->has('questions')
+                        ->isPublic()
+                        ->published()
+                        ->orderBy('is_paid', 'asc')
+                        ->orderBy('title', 'asc')
+                        ->select(['id', 'title', 'slug', 'is_paid', 'sub_category_id']);
+                }]);
             }])
             ->orderBy('name')
             ->get(['id', 'name', 'slug', 'code']);
 
-        $sections = $subjects->map(function (SubCategory $subject) {
+        $sections = $subjects->map(function (Category $subject) {
+            $allMocks = $subject->subCategories->flatMap(function ($subCategory) {
+                return $subCategory->quizzes;
+            });
+
             return [
                 'id' => $subject->id,
                 'name' => $subject->name,
                 'slug' => $subject->slug,
-                'mocks' => $subject->quizzes->map(function ($quiz) {
+                'mocks' => $allMocks->map(function ($quiz) {
                     return [
                         'id' => $quiz->id,
                         'title' => $quiz->title,
@@ -50,7 +59,7 @@ class MockController extends Controller
         })->values();
 
         return Inertia::render('User/Mock', [
-            'category' => $selected instanceof SubCategory ? $selected->only(['id', 'name', 'slug', 'code']) : null,
+            'subject' => $selected ? ['id' => $selected->id, 'name' => $selected->name, 'slug' => $selected->slug, 'code' => $selected->code] : null,
             'sections' => $sections,
         ]);
     }

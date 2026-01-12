@@ -213,7 +213,7 @@
                         active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
                         items:[
                             {
-                                label:'Quizzes',
+                                label:'Mocks',
                                 url: route('quizzes.index'),
                                 active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
                             },

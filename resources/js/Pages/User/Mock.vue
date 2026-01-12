@@ -11,7 +11,7 @@
                         {{ __("All Subjects") }}
                     </h2>
                     <p
-                        v-if="category && category.name"
+                        v-if="subject && subject.name"
                         class="mt-1 text-sm text-gray-500"
                     >
                         {{ __("Selected syllabus of your choice") }}
@@ -148,7 +148,7 @@ export default {
     },
 
     props: {
-        category: {
+        subject: {
             type: Object,
             default: null,
         },

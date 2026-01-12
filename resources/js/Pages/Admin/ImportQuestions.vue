@@ -35,10 +35,10 @@
                     <div class="p-6">
                         <form @submit.prevent="submit" enctype="multipart/form-data">
                             <div class="flex flex-col w-full mb-6">
-                                <label class="pb-2 text-sm font-semibold text-gray-800">{{ __("Choose Skill") }}<span class="ltr:ml-1 rtl:mr-1 text-red-400">*</span></label>
+                                <label class="pb-2 text-sm font-semibold text-gray-800">{{ __("Choose Mock") }}<span class="ltr:ml-1 rtl:mr-1 text-red-400">*</span></label>
                                 <v-select
                                     :options="skills"
-                                    :placeholder="__('Search') + ' ' + __('Skill')"
+                                    :placeholder="__('Search') + ' ' + __('Mock')"
                                     :reduce="(skill) => skill.id"
                                     @input="skillChanged"
                                     @search="searchSkills"
