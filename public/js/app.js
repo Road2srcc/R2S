@@ -1141,18 +1141,6 @@ var map = {
 		"/js/vendor",
 		"resources_js_Pages_Admin_Skills_vue"
 	],
-	"./Admin/SubCategories": [
-		"./resources/js/Pages/Admin/SubCategories.vue",
-		"js/vendor-vue",
-		"/js/vendor",
-		"resources_js_Pages_Admin_SubCategories_vue"
-	],
-	"./Admin/SubCategories.vue": [
-		"./resources/js/Pages/Admin/SubCategories.vue",
-		"js/vendor-vue",
-		"/js/vendor",
-		"resources_js_Pages_Admin_SubCategories_vue"
-	],
 	"./Admin/SubscriptionDetails": [
 		"./resources/js/Pages/Admin/SubscriptionDetails.vue",
 		"js/vendor-vue",

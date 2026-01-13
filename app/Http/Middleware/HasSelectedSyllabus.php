@@ -17,9 +17,11 @@ class HasSelectedSyllabus
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Cookie::has('category_id')) {
-            return redirect()->route('change_syllabus');
-        }
+        // Syllabus selection disabled - always allow access
+        // Original code:
+        // if(!Cookie::has('category_id')) {
+        //     return redirect()->route('change_syllabus');
+        // }
 
         return $next($request);
     }

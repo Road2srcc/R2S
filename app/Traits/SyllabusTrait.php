@@ -16,14 +16,15 @@ trait SyllabusTrait
 {
     /**
      * Get user selected syllabus
-     *
+     * Note: Syllabus selection is disabled - returns null if not found
      */
     public function selectedSyllabus()
     {
         try {
             return SubCategory::findOrFail(Cookie::get('category_id'));
         } catch (ModelNotFoundException $exception) {
-            return redirect()->route('change_syllabus')->send();
+            // Syllabus selection disabled - return null instead of redirecting
+            return null;
         }
     }
 }

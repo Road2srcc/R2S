@@ -28,11 +28,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Syllabus Routes
+    | Syllabus Routes - DISABLED (Students go directly to Mock page)
     |--------------------------------------------------------------------------
     */
-    Route::get('/change-syllabus', [SyllabusController::class, 'changeSyllabus'])->name('change_syllabus');
-    Route::post('/update-syllabus', [SyllabusController::class, 'updateSyllabus'])->name('update_syllabus');
+    // Route::get('/change-syllabus', [SyllabusController::class, 'changeSyllabus'])->name('change_syllabus');
+    // Route::post('/update-syllabus', [SyllabusController::class, 'updateSyllabus'])->name('update_syllabus');
 
     /*
     |--------------------------------------------------------------------------

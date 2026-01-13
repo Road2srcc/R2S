@@ -10,7 +10,7 @@ class MockController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:guest|student|employee', 'verify.syllabus']);
+        $this->middleware(['role:guest|student|employee']);
     }
 
     public function index()

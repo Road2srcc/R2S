@@ -75,9 +75,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
     Route::resource('exam-types', ExamTypeCrudController::class);
     Route::resource('tags', TagCrudController::class);
 
-    Route::resource('sub-categories', SubCategoryCrudController::class);
-    Route::get('fetch_sub_category_sections/{id}', [SubCategoryCrudController::class, 'fetchSections'])->name('fetch_sub_category_sections');
-    Route::post('update_sub_category_sections/{id}', [SubCategoryCrudController::class, 'updateSections'])->name('update_sub_category_sections');
+    // SubCategory management routes - REMOVED FROM UI
+    // Route::resource('sub-categories', SubCategoryCrudController::class);
+    // Route::get('fetch_sub_category_sections/{id}', [SubCategoryCrudController::class, 'fetchSections'])->name('fetch_sub_category_sections');
+    // Route::post('update_sub_category_sections/{id}', [SubCategoryCrudController::class, 'updateSections'])->name('update_sub_category_sections');
 
     /*
     |--------------------------------------------------------------------------

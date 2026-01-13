@@ -22,13 +22,13 @@ class HomeController extends Controller
         if (Auth::user()->hasRole('admin')) {
             return redirect()->route('admin_dashboard');
         } elseif (Auth::user()->hasRole(['guest', 'student', 'employee'])) {
-            return redirect()->route('user_dashboard');
+            return redirect()->route('mock_page');
         } elseif (Auth::user()->hasRole('instructor')) {
             return redirect()->route('instructor_dashboard');
         } elseif (Auth::user()->hasRole('parent')) {
             return redirect()->route('parent_dashboard');
         } else {
-            return redirect()->route('user_dashboard');
+            return redirect()->route('mock_page');
         }
     }
 

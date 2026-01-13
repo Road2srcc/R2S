@@ -365,11 +365,6 @@
                                 active: this.$page.props.user.role_id === 'admin',
                             },
                             {
-                                label:'Sub Categories',
-                                url: route('sub-categories.index'),
-                                active: this.$page.props.user.role_id === 'admin',
-                            },
-                            {
                                 label:'Tags',
                                 url: route('tags.index'),
                                 active: this.$page.props.user.role_id === 'admin',

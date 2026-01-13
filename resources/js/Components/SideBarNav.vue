@@ -1,18 +1,21 @@
 <template>
     <nav :class="{'flex-1 bg-primary': !isMobile}" class="relative px-4 space-y-3">
+        <!-- Syllabus Selection - REMOVED
         <div class="bg-gray-100 bg-opacity-10 rounded-md py-3 px-4">
             <h4 class="text-white text-base font-semibold">{{ $page.props.currentCategory ? $page.props.currentCategory.name : __('No Syllabus Selected')}}</h4>
             <inertia-link :href="route('change_syllabus')" class="text-secondary underline text-sm">
                 {{ $page.props.currentCategory ? __('Change Syllabus') : __('Choose Syllabus') }}
             </inertia-link>
         </div>
+        -->
+        <!-- Dashboard - REMOVED (redirects to Mock)
         <inertia-link :href="route('user_dashboard')"
                       :class="[route().current() === 'user_dashboard' ? 'bg-secondary text-white' : 'text-white hover:bg-secondary hover:text-white']"
                       class="group rounded-md md py-3 px-4 flex items-center text-base font-semibold">
             <svg :class="[route().current() === 'user_dashboard' ? 'text-white' : 'text-secondary']" class="group-hover:text-white ltr:mr-3 rtl:ml-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5v2h-4V5h4M9 5v6H5V5h4m10 8v6h-4v-6h4M9 17v2H5v-2h4M21 3h-8v6h8V3zM11 3H3v10h8V3zm10 8h-8v10h8V11zm-10 4H3v6h8v-6z"/></svg>
             {{ __('Dashboard') }}
         </inertia-link>
-        
+        -->
         <inertia-link :href="route('mock_page')"
                       :class="[route().current() === 'mock_page' ? 'bg-secondary text-white' : 'text-white hover:bg-secondary hover:text-white']"
                       class="group rounded-md py-3 px-4 flex items-center text-base font-semibold">
