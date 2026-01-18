@@ -15,59 +15,68 @@ class MockController extends Controller
 
     public function index()
     {
-        // Group mocks by parent category (subject)
-        $selected = auth()->user()->selectedSyllabus();
+        $user = auth()->user();
+        $selected = $user->selectedSyllabus();
 
-        $subjects = Category::active()
-            ->where(function ($query) {
-                $query->whereHas('subCategories.quizzes', function ($q) {
-                    $q->has('questions')->isPublic()->published();
-                })->orWhereHas('quizzes', function ($q) {
-                    $q->has('questions')->isPublic()->published();
-                });
-            })
-            ->with(['subCategories' => function ($query) {
-                $query->whereHas('quizzes', function ($q) {
-                    $q->has('questions')->isPublic()->published();
-                })
-                ->with(['quizzes' => function ($q) {
-                    $q->has('questions')
-                        ->isPublic()
-                        ->published()
-                        ->orderBy('is_paid', 'asc')
-                        ->orderBy('title', 'asc')
-                        ->select(['id', 'title', 'slug', 'is_paid', 'sub_category_id', 'category_id']);
-                }]);
-            }, 'quizzes' => function ($query) {
-                $query->has('questions')
-                    ->isPublic()
-                    ->published()
-                    ->orderBy('is_paid', 'asc')
-                    ->orderBy('title', 'asc')
-                    ->select(['id', 'title', 'slug', 'is_paid', 'sub_category_id', 'category_id']);
-            }])
-            ->orderBy('name')
-            ->get(['id', 'name', 'slug', 'code']);
+        // 1. Fetch all active subjects (Categories)
+        $subjects = \App\Models\Category::active()->orderBy('name')->get(['id', 'name', 'slug', 'code']);
 
-        $sections = $subjects->map(function (Category $subject) {
-            $allMocks = $subject->subCategories->flatMap(function ($subCategory) {
-                return $subCategory->quizzes;
-            })->concat($subject->quizzes);
+        // 2. Fetch all active subscriptions for the user
+        $subscriptions = $user->subscriptions()
+            ->where('status', 'active')
+            ->where('ends_at', '>', now())
+            ->get(['category_id', 'category_type']);
+
+        $subscribedCategoryIds = $subscriptions->whereIn('category_type', ['App\Models\Category', 'category'])->pluck('category_id')->toArray();
+        $subscribedSubCategoryIds = $subscriptions->whereIn('category_type', ['App\Models\SubCategory', 'sub_category'])->pluck('category_id')->toArray();
+
+        // 3. Map subjects to sections with their associated mocks
+        $sections = $subjects->map(function ($subject) use ($subscribedCategoryIds, $subscribedSubCategoryIds) {
+            $isSubjectSubscribed = in_array($subject->id, $subscribedCategoryIds);
+
+            // Fetch mocks assigned via subcategories belonging to this subject
+            $subCategoryMocks = \App\Models\Quiz::whereHas('subCategory', function($q) use ($subject) {
+                $q->where('category_id', $subject->id);
+            })->has('questions')->isPublic()->published()->get(['id', 'title', 'slug', 'is_paid', 'sub_category_id', 'category_id']);
+
+            // Fetch mocks directly assigned to this subject
+            $directMocks = \App\Models\Quiz::where('category_id', $subject->id)
+                ->has('questions')->isPublic()->published()->get(['id', 'title', 'slug', 'is_paid', 'sub_category_id', 'category_id']);
+
+            // Merge and ensure uniqueness within the subject
+            $allMocks = $subCategoryMocks->concat($directMocks)->unique('id');
+
+            $mappedMocks = $allMocks->map(function($quiz) use ($isSubjectSubscribed, $subscribedSubCategoryIds, $subscribedCategoryIds) {
+                // A quiz is unlocked if:
+                // - It's free (is_paid is false)
+                // - OR the user is subscribed to the parent Subject (Category)
+                // - OR the user is subscribed specifically to the Quiz's current Category (if set)
+                // - OR the user is subscribed specifically to the Quiz's Sub-Category (if set)
+                $unlocked = !$quiz->is_paid 
+                    || $isSubjectSubscribed 
+                    || ($quiz->category_id && in_array($quiz->category_id, $subscribedCategoryIds))
+                    || ($quiz->sub_category_id && in_array($quiz->sub_category_id, $subscribedSubCategoryIds));
+
+                return [
+                    'id' => $quiz->id,
+                    'title' => $quiz->title,
+                    'slug' => $quiz->slug,
+                    'is_paid' => (bool) $quiz->is_paid,
+                    'unlocked' => (bool) $unlocked,
+                ];
+            })->sortBy('title')->values();
+
+            if ($mappedMocks->isEmpty()) {
+                return null;
+            }
 
             return [
                 'id' => $subject->id,
                 'name' => $subject->name,
                 'slug' => $subject->slug,
-                'mocks' => $allMocks->unique('id')->map(function ($quiz) {
-                    return [
-                        'id' => $quiz->id,
-                        'title' => $quiz->title,
-                        'slug' => $quiz->slug,
-                        'is_paid' => (bool) $quiz->is_paid,
-                    ];
-                })->values(),
+                'mocks' => $mappedMocks,
             ];
-        })->values();
+        })->filter()->values();
 
         return Inertia::render('User/Mock', [
             'subject' => $selected ? ['id' => $selected->id, 'name' => $selected->name, 'slug' => $selected->slug, 'code' => $selected->code] : null,

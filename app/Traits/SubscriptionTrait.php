@@ -24,7 +24,7 @@ trait SubscriptionTrait
             ->with('plan', function ($query) {
                 $query->with('features');
             })
-            ->where('category_id', '=', $category)
+            ->whereIn('category_id', (array) $category)
             ->where('ends_at', '>', now()->toDateTimeString())
             ->where('status', '=', 'active')
             ->first();

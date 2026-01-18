@@ -33,7 +33,7 @@
                                     :key="mock.id"
                                     type="button"
                                     class="w-full rounded-3xl border border-gray-300 bg-white p-5 text-left transition-all duration-200 hover:border-gray-400 md:px-6 md:py-6 group relative"
-                                    :class="mock.is_paid ? 'bg-gray-50' : ''"
+                                    :class="mock.is_paid && !mock.unlocked ? 'bg-gray-50' : ''"
                                     @click="onClickMock(mock)"
                                 >
                                     <div
@@ -48,7 +48,7 @@
                                             <p
                                                 class="pb-2 pt-1 text-xl font-semibold md:text-xl md:leading-none"
                                                 :class="
-                                                    mock.is_paid
+                                                    mock.is_paid && !mock.unlocked
                                                         ? 'text-gray-500'
                                                         : 'text-gray-900'
                                                 "
@@ -62,7 +62,7 @@
                                             :class="mock.is_paid ? '' : 'pt-3'"
                                         >
                                             <p
-                                                v-if="mock.is_paid"
+                                                v-if="mock.is_paid && !mock.unlocked"
                                                 class="flex items-center gap-1 text-xs text-gray-600 opacity-0 transition-opacity group-hover:opacity-100 md:text-sm"
                                             >
                                                 {{ __("Unlock") }} →
@@ -77,7 +77,7 @@
                                     </div>
 
                                     <svg
-                                        v-if="mock.is_paid"
+                                        v-if="mock.is_paid && !mock.unlocked"
                                         class="absolute bottom-4 right-4 h-4 w-4 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
@@ -198,7 +198,7 @@ export default {
         },
 
         onClickMock(mock) {
-            if (mock && mock.is_paid) {
+            if (mock && mock.is_paid && !mock.unlocked) {
                 window.location.assign(route("pricing"));
                 return;
             }

@@ -89,7 +89,7 @@ class QuizScheduleController extends Controller
             'startsIn' => $startsIn,
             'allowAccess' => $allowAccess,
             'closesAt' => $closesAt,
-            'subscription' => request()->user()->hasActiveSubscription($quiz->category_id ?? $quiz->sub_category_id, 'quizzes'),
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$quiz->category_id, $quiz->sub_category_id]), 'quizzes'),
         ]);
     }
 
@@ -104,7 +104,7 @@ class QuizScheduleController extends Controller
     public function initQuizSchedule(Quiz $quiz, $schedule, LocalizationSettings $localization)
     {
         $quizSchedule = QuizSchedule::with('userGroups:id,name')->where('code', $schedule)->firstOrFail();
-        $subscription = request()->user()->hasActiveSubscription($quiz->category_id ?? $quiz->sub_category_id, 'quizzes');
+        $subscription = request()->user()->hasActiveSubscription(array_filter([$quiz->category_id, $quiz->sub_category_id]), 'quizzes');
 
         // Load completed quiz sessions in this schedule
         $quiz->loadCount(['sessions' => function ($query) use ($quizSchedule) {

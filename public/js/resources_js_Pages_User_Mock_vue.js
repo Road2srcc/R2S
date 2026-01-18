@@ -785,7 +785,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$set(this.visibleMocksBySectionId, section.id, next);
     },
     onClickMock: function onClickMock(mock) {
-      if (mock && mock.is_paid) {
+      if (mock && mock.is_paid && !mock.unlocked) {
         window.location.assign(route("pricing"));
         return;
       }
@@ -2317,7 +2317,10 @@ var render = function () {
                             key: mock.id,
                             staticClass:
                               "w-full rounded-3xl border border-gray-300 bg-white p-5 text-left transition-all duration-200 hover:border-gray-400 md:px-6 md:py-6 group relative",
-                            class: mock.is_paid ? "bg-gray-50" : "",
+                            class:
+                              mock.is_paid && !mock.unlocked
+                                ? "bg-gray-50"
+                                : "",
                             attrs: { type: "button" },
                             on: {
                               click: function ($event) {
@@ -2354,9 +2357,10 @@ var render = function () {
                                     {
                                       staticClass:
                                         "pb-2 pt-1 text-xl font-semibold md:text-xl md:leading-none",
-                                      class: mock.is_paid
-                                        ? "text-gray-500"
-                                        : "text-gray-900",
+                                      class:
+                                        mock.is_paid && !mock.unlocked
+                                          ? "text-gray-500"
+                                          : "text-gray-900",
                                     },
                                     [
                                       _vm._v(
@@ -2375,7 +2379,7 @@ var render = function () {
                                     class: mock.is_paid ? "" : "pt-3",
                                   },
                                   [
-                                    mock.is_paid
+                                    mock.is_paid && !mock.unlocked
                                       ? _c(
                                           "p",
                                           {
@@ -2409,7 +2413,7 @@ var render = function () {
                               ]
                             ),
                             _vm._v(" "),
-                            mock.is_paid
+                            mock.is_paid && !mock.unlocked
                               ? _c(
                                   "svg",
                                   {

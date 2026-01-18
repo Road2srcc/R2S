@@ -50,7 +50,7 @@ class QuizDashboardController extends Controller
         return Inertia::render('User/QuizDashboard', [
             'quizSchedules' => fractal($schedules, new QuizScheduleCardTransformer())->toArray()['data'],
             'quizTypes' => fractal($quizTypes, new QuizTypeTransformer())->toArray()['data'],
-            'subscription' => request()->user()->hasActiveSubscription($category->id, 'quizzes')
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$category->id, $category->category_id]), 'quizzes')
         ]);
     }
 
@@ -63,7 +63,7 @@ class QuizDashboardController extends Controller
     {
         $category = auth()->user()->selectedSyllabus();
         return Inertia::render('User/LiveQuizzes', [
-            'subscription' => request()->user()->hasActiveSubscription($category->id, 'quizzes')
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$category->id, $category->category_id]), 'quizzes')
         ]);
     }
 
@@ -103,7 +103,7 @@ class QuizDashboardController extends Controller
         $category = auth()->user()->selectedSyllabus();
         return Inertia::render('User/QuizzesByType', [
             'type' => $type,
-            'subscription' => request()->user()->hasActiveSubscription($category->id, 'quizzes')
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$category->id, $category->category_id]), 'quizzes')
         ]);
     }
 
