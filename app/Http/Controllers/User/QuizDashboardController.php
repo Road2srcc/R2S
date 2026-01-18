@@ -38,7 +38,8 @@ class QuizDashboardController extends Controller
         $schedules = QuizSchedule::whereHas('userGroups', function (Builder $query) use ($userGroups) {
             $query->whereIn('user_group_id', $userGroups);
         })->whereHas('quiz', function (Builder $query) use ($category) {
-            $query->where('sub_category_id', '=', $category->id);
+            $query->where('sub_category_id', '=', $category->id)
+                ->orWhere('category_id', '=', $category->category_id);
         })->with(['quiz' => function($builder) {
             $builder->with(['subCategory:id,name', 'quizType:id,name']);
         }])->orderBy('end_date', 'asc')->active()->limit(4)->get();
@@ -80,7 +81,8 @@ class QuizDashboardController extends Controller
         $schedules = QuizSchedule::whereHas('userGroups', function (Builder $query) use ($userGroups) {
             $query->whereIn('user_group_id', $userGroups);
         })->whereHas('quiz', function (Builder $query) use ($category) {
-            $query->where('sub_category_id', '=', $category->id);
+            $query->where('sub_category_id', '=', $category->id)
+                ->orWhere('category_id', '=', $category->category_id);
         })->with(['quiz' => function($builder) {
             $builder->with(['subCategory:id,name', 'quizType:id,name']);
         }])->orderBy('end_date', 'asc')->active()->paginate(10);
@@ -117,7 +119,10 @@ class QuizDashboardController extends Controller
 
         // Fetch public quizzes by quiz type
         $quizzes = $type->quizzes()->has('questions')
-            ->where('sub_category_id', '=', $subCategory->id)
+            ->where(function ($query) use ($subCategory) {
+                $query->where('sub_category_id', '=', $subCategory->id)
+                    ->orWhere('category_id', '=', $subCategory->category_id);
+            })
             ->orderBy('quizzes.is_paid', 'asc')
             ->with(['subCategory:id,name', 'quizType:id,name'])
             ->isPublic()->published()

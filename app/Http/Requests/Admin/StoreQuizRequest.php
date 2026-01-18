@@ -32,7 +32,7 @@ class StoreQuizRequest extends FormRequest
         return [
             'title' => ['required'],
             'description' => ['nullable'],
-            'sub_category_id' => ['required'],
+            'category_id' => ['required'],
             'quiz_type_id' => ['required'],
             'is_paid' => ['required'],
             'can_redeem' => ['required'],

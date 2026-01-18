@@ -97,6 +97,11 @@ class Quiz extends Model
         return $this->belongsTo(SubCategory::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function quizType()
     {
         return $this->belongsTo(QuizType::class);

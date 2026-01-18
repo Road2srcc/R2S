@@ -31,7 +31,7 @@ class QuizDetailTransformer extends TransformerAbstract
             'total_questions' => $quiz->total_questions,
             'total_marks' => $quiz->total_marks,
             'total_duration' => $quiz->total_duration/60,
-            'category' => $quiz->subCategory->name,
+            'category' => $quiz->category->name ?? $quiz->subCategory->name,
             'type' => $quiz->quizType->name,
             'uncompleted_sessions' => $quiz->sessions_count
         ];

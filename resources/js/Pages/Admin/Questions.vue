@@ -166,12 +166,12 @@
                         },
                     },
                     {
-                        label: this.__('Skill'),
+                        label: this.__('Mock'),
                         field: 'skill',
                         sortable: false,
                         filterOptions: {
                             enabled: true,
-                            placeholder: this.__('Search') + ' ' + this.__('Skill'),
+                            placeholder: this.__('Search') + ' ' + this.__('Mock'),
                             filterValue: null,
                             trigger: 'enter',
                         },

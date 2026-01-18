@@ -14,6 +14,8 @@ use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Transformers\Admin\CategoryTransformer;
+use App\Transformers\Admin\CategorySearchTransformer;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryCrudController extends Controller
@@ -118,5 +120,22 @@ class CategoryCrudController extends Controller
         }
         return redirect()->back()
             ->with('successMessage', 'Category was successfully deleted!');
+    }
+    /**
+     * Search categories api endpoint
+     *
+     * @param Request $request
+     * @param CategoryFilters $filters
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request, CategoryFilters $filters)
+    {
+        $query = $request->get('query');
+        return response()->json([
+            'categories' => fractal(Category::select(['id', 'name'])->filter($filters)
+                ->where('name', 'like', '%'.$query.'%')->limit(20)
+                ->get(), new CategorySearchTransformer())
+                ->toArray()['data']
+        ]);
     }
 }

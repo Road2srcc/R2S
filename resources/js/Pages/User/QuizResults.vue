@@ -6,11 +6,7 @@
                 <h1 class="app-heading">{{ quiz.title }} {{ __('Results') }}</h1>
             </div>
         </template>
-        <template #actions>
-            <a :href="route('download_quiz_report', {quiz: quiz.slug, session: session.code})" target="_blank" class="qt-btn qt-btn-sm qt-btn-success">
-                {{ __('Download Score Report') }}
-            </a>
-        </template>
+
 
         <div class="w-full mt-8">
             <progress-navigator :steps="steps"></progress-navigator>

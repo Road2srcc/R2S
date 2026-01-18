@@ -32,7 +32,7 @@ class QuizScheduleCardTransformer extends TransformerAbstract
             'total_questions' => $schedule->quiz->total_questions,
             'total_marks' => $schedule->quiz->total_marks,
             'total_duration' => $schedule->quiz->total_duration/60,
-            'category' => $schedule->quiz->subCategory->name,
+            'category' => $schedule->quiz->category->name ?? $schedule->quiz->subCategory->name,
             'type' => $schedule->quiz->quizType->name,
             'paid' => $schedule->quiz->is_paid,
             'redeem' => $schedule->quiz->can_redeem ? $schedule->quiz->points_required.' XP' : false,

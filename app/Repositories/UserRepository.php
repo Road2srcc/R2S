@@ -34,12 +34,6 @@ class UserRepository
                 'url' => route('my_quizzes'),
                 'active' => $active == 'my_quizzes'
             ],
-            [
-                'key' => 'my_practice',
-                'title' => __('My Practice Sessions'),
-                'url' => route('my_practice'),
-                'active' => $active == 'my_practice'
-            ]
         ];
     }
 }

@@ -874,11 +874,11 @@ __webpack_require__.r(__webpack_exports__);
         icon: '<svg class="flex-shrink-0 w-5 h-5 ltr:mr-2 rtl:ml-2 transition group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>',
         active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
         items: [{
-          label: 'Sections',
+          label: 'Exam',
           url: route('sections.index'),
           active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
         }, {
-          label: 'Skills',
+          label: 'Mocks',
           url: route('skills.index'),
           active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
         }, {
@@ -1147,16 +1147,17 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     steps: Array,
     editFlag: false,
     quizId: Number,
-    initialSubCategories: Array,
+    initialCategories: Array,
     quizTypes: Array,
     errors: Object
   },
   data: function data() {
+    var _this$quiz$category_i;
     return {
       form: {
         title: this.editFlag ? this.quiz.title : '',
         description: this.editFlag ? this.quiz.description : '',
-        sub_category_id: this.editFlag ? this.quiz.sub_category_id : '',
+        category_id: this.editFlag ? (_this$quiz$category_i = this.quiz.category_id) !== null && _this$quiz$category_i !== void 0 ? _this$quiz$category_i : this.initialCategories.length > 0 ? this.initialCategories[0].id : '' : '',
         quiz_type_id: this.editFlag ? this.quiz.quiz_type_id : '',
         is_paid: this.editFlag ? this.quiz.is_paid : false,
         price: this.editFlag ? this.quiz.price : 0,
@@ -1165,7 +1166,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         is_active: this.editFlag ? this.quiz.is_active : false,
         is_private: this.editFlag ? this.quiz.is_private : false
       },
-      subCategories: this.initialSubCategories,
+      categories: this.initialCategories,
       editorUrl: window.CKEditorURL,
       editorConfig: {
         contentsLangDirection: this.$page.props.rtl ? 'rtl' : 'ltr'
@@ -1187,7 +1188,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         title: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_10__.required
         },
-        sub_category_id: {
+        category_id: {
           required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_10__.required
         },
         quiz_type_id: {
@@ -1255,17 +1256,17 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         }
       });
     },
-    searchSubCategories: function searchSubCategories(search, loading) {
+    searchCategories: function searchCategories(search, loading) {
       if (search !== '') {
         var _this = this;
         loading(true);
         clearTimeout(this.debounce);
-        this.subCategories = [];
+        this.categories = [];
         this.debounce = setTimeout(function () {
-          axios.get(route('search_sub_categories', {
+          axios.get(route('search_categories', {
             query: search
           })).then(function (response) {
-            _this.subCategories = response.data.subCategories;
+            _this.categories = response.data.categories;
             loading(false);
           })["catch"](function (error) {
             loading(false);
@@ -2932,7 +2933,7 @@ var render = function () {
                                 "pb-2 text-sm font-semibold text-gray-800",
                             },
                             [
-                              _vm._v(_vm._s(_vm.__("Sub Category"))),
+                              _vm._v(_vm._s(_vm.__("Category"))),
                               _c(
                                 "span",
                                 {
@@ -2945,15 +2946,15 @@ var render = function () {
                           _vm._v(" "),
                           _c("v-select", {
                             attrs: {
-                              id: "sub_category_id",
-                              options: _vm.subCategories,
-                              reduce: function (sub) {
-                                return sub.id
+                              id: "category_id",
+                              options: _vm.categories,
+                              reduce: function (cat) {
+                                return cat.id
                               },
                               label: "name",
                               dir: _vm.$page.props.rtl ? "rtl" : "ltr",
                             },
-                            on: { search: _vm.searchSubCategories },
+                            on: { search: _vm.searchCategories },
                             scopedSlots: _vm._u([
                               {
                                 key: "no-options",
@@ -2987,17 +2988,17 @@ var render = function () {
                               },
                             ]),
                             model: {
-                              value: _vm.form.sub_category_id,
+                              value: _vm.form.category_id,
                               callback: function ($$v) {
-                                _vm.$set(_vm.form, "sub_category_id", $$v)
+                                _vm.$set(_vm.form, "category_id", $$v)
                               },
-                              expression: "form.sub_category_id",
+                              expression: "form.category_id",
                             },
                           }),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-control-errors" }, [
-                            _vm.$v.form.sub_category_id.$error &&
-                            !_vm.$v.form.sub_category_id.required
+                            _vm.$v.form.category_id.$error &&
+                            !_vm.$v.form.category_id.required
                               ? _c(
                                   "p",
                                   {
@@ -3006,7 +3007,7 @@ var render = function () {
                                   },
                                   [
                                     _vm._v(
-                                      _vm._s(_vm.__("Sub Category")) +
+                                      _vm._s(_vm.__("Category")) +
                                         " " +
                                         _vm._s(_vm.__("is required"))
                                     ),

@@ -1,11 +1,11 @@
 <template>
     <admin-layout>
         <template #header>
-            <h4 class="page-heading">{{ __('Sections') }}</h4>
+            <h4 class="page-heading">{{ __('Exam') }}</h4>
         </template>
         <template #actions>
             <button @click="createForm = true" class="qt-btn qt-btn-success">
-                {{ __('New') }} {{ __('Section') }}
+                {{ __('New') }} {{ __('Exam') }}
             </button>
         </template>
 
@@ -48,7 +48,7 @@
                             <no-data-table>
                                 <template slot="action">
                                     <button @click="createForm = true" class="qt-btn-sm qt-btn-primary" type="button">
-                                        {{ __('New') }} {{ __('Section') }}
+                                        {{ __('New') }} {{ __('Exam') }}
                                     </button>
                                 </template>
                             </no-data-table>
@@ -57,11 +57,11 @@
 
                     <!-- Sidebar Forms -->
                     <Sidebar position="right" :visible.sync="createForm" class="p-sidebar-md">
-                        <SectionForm :form-errors="errors" @close="createForm = false;" :title="__('New') +' '+__('Section')"/>
+                        <SectionForm :form-errors="errors" @close="createForm = false;" :title="__('New') +' '+__('Exam')"/>
                     </Sidebar>
                     <Sidebar position="right" :visible.sync="editForm" class="p-sidebar-md">
                         <SectionForm :edit-flag.sync="editForm" :section-id="currentId" :form-errors="errors"
-                                      @close="editForm = false;" :title="__('Edit') +' '+__('Section')"/>
+                                      @close="editForm = false;" :title="__('Edit') +' '+__('Exam')"/>
                     </Sidebar>
                 </div>
             </div>

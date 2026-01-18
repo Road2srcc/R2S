@@ -1,11 +1,11 @@
 <template>
     <admin-layout>
         <template #header>
-            <h4 class="page-heading">{{ __('Skills') }}</h4>
+            <h4 class="page-heading">{{ __('Mocks') }}</h4>
         </template>
         <template #actions>
             <button @click="createForm = true" class="qt-btn qt-btn-success">
-                {{ __('New') }} {{ __('Skill') }}
+                {{ __('New') }} {{ __('Mock') }}
             </button>
         </template>
 
@@ -45,7 +45,7 @@
                             <no-data-table>
                                 <template slot="action">
                                     <button @click="createForm = true" class="qt-btn-sm qt-btn-primary" type="button">
-                                        {{ __('New') }} {{ __('Skill') }}
+                                        {{ __('New') }} {{ __('Mock') }}
                                     </button>
                                 </template>
                             </no-data-table>
@@ -54,11 +54,11 @@
 
                     <!-- Sidebar Forms -->
                     <Sidebar position="right" :visible.sync="createForm" class="p-sidebar-md">
-                        <SkillForm :sections="sections" :form-errors="errors" @close="createForm = false" :title="__('New') +' '+__('Skill')"/>
+                        <SkillForm :sections="sections" :form-errors="errors" @close="createForm = false" :title="__('New') +' '+__('Mock')"/>
                     </Sidebar>
                     <Sidebar position="right" :visible.sync="editForm" class="p-sidebar-md">
                         <SkillForm :sections="sections" :edit-flag.sync="editForm" :skill-id="currentId" :form-errors="errors"
-                                     @close="editForm = false" :title="__('Edit') +' '+__('Skill')"/>
+                                     @close="editForm = false" :title="__('Edit') +' '+__('Mock')"/>
                     </Sidebar>
 
                 </div>
@@ -129,7 +129,7 @@
                         sortable: false,
                     },
                     {
-                        label: this.__('Section'),
+                        label: this.__('Exam'),
                         field: 'section',
                         sortable: false,
                     },

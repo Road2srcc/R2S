@@ -16,7 +16,7 @@
                         <div class="md:w-6/12 w-full py-6 md:pb-0 md:px-6">
                             <form @submit.prevent="submitForm">
                                 <div class="w-full flex flex-col mb-6">
-                                    <label for="skill_id" class="pb-2 text-sm font-semibold text-gray-800">{{ __('Skill') }}</label>
+                                    <label for="skill_id" class="pb-2 text-sm font-semibold text-gray-800">Mock</label>
                                     <v-select id="skill_id" v-model="$v.form.skill_id.$model" :options="skills" @search="searchSkills"
                                               :reduce="skill => skill.id" label="name" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
                                         <template v-slot:no-options="{ search, searching }">
@@ -25,7 +25,7 @@
                                         </template>
                                     </v-select>
                                     <div class="form-control-errors">
-                                        <p v-if="$v.form.skill_id.$error && !$v.form.skill_id.required" role="alert" class="text-xs text-red-500 pt-2">{{ __('Skill') }} {{ __('is required') }}</p>
+                                        <p v-if="$v.form.skill_id.$error && !$v.form.skill_id.required" role="alert" class="text-xs text-red-500 pt-2">Mock is required</p>
                                     </div>
                                 </div>
                                 <div class="w-full flex flex-col mb-6">

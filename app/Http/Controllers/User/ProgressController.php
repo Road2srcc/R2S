@@ -86,21 +86,5 @@ class ProgressController extends Controller
         ]);
     }
 
-    /**
-     * User My Practice Screen
-     *
-     * @return \Inertia\Response
-     */
-    public function myPractice()
-    {
-        $sessions = PracticeSession::with('practiceSet:id,slug,title')
-            ->where('user_id', auth()->user()->id)
-            ->where('status', '=', 'completed')
-            ->paginate(request()->perPage != null ? request()->perPage : 10);
 
-        return Inertia::render('User/MyPractice', [
-            'steps' => $this->repository->getProgressNavigatorLinks('my_practice'),
-            'practiceSessions' => fractal($sessions, new UserPracticeSessionTransformer())->toArray(),
-        ]);
-    }
 }

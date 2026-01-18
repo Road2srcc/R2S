@@ -27,19 +27,19 @@
                                 </div>
                                 <div class="grid sm:grid-cols-2 sm:gap-4">
                                     <div class="w-full flex flex-col mb-6">
-                                        <label class="pb-2 text-sm font-semibold text-gray-800">{{ __('Sub Category') }}<span
+                                        <label class="pb-2 text-sm font-semibold text-gray-800">{{ __('Category') }}<span
                                             class="ltr:ml-1 rtl:mr-1 text-red-400">*</span></label>
-                                        <v-select id="sub_category_id" v-model="form.sub_category_id"
-                                                  :options="subCategories" @search="searchSubCategories"
-                                                  :reduce="sub => sub.id" label="name" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
+                                        <v-select id="category_id" v-model="form.category_id"
+                                                  :options="categories" @search="searchCategories"
+                                                  :reduce="cat => cat.id" label="name" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
                                         <template v-slot:no-options="{ search, searching }">
                                             <template v-if="searching">{{ __('No results were found for this search') }}.</template>
                                             <em v-else class="opacity-50">{{ __('Start typing to search') }}.</em>
                                         </template>
                                         </v-select>
                                         <div class="form-control-errors">
-                                            <p v-if="$v.form.sub_category_id.$error && !$v.form.sub_category_id.required"
-                                               role="alert" class="text-xs text-red-500 pt-2">{{ __('Sub Category') }} {{ __('is required') }}</p>
+                                            <p v-if="$v.form.category_id.$error && !$v.form.category_id.required"
+                                               role="alert" class="text-xs text-red-500 pt-2">{{ __('Category') }} {{ __('is required') }}</p>
                                         </div>
                                     </div>
                                     <div class="w-full flex flex-col mb-6">
@@ -167,7 +167,7 @@
             steps: Array,
             editFlag: false,
             quizId: Number,
-            initialSubCategories: Array,
+            initialCategories: Array,
             quizTypes: Array,
             errors: Object
         },
@@ -176,7 +176,7 @@
                 form: {
                     title: this.editFlag ? this.quiz.title : '',
                     description: this.editFlag ? this.quiz.description : '',
-                    sub_category_id: this.editFlag ? this.quiz.sub_category_id : '',
+                    category_id: this.editFlag ? (this.quiz.category_id ?? (this.initialCategories.length > 0 ? this.initialCategories[0].id : '')) : '',
                     quiz_type_id: this.editFlag ? this.quiz.quiz_type_id : '',
                     is_paid: this.editFlag ? this.quiz.is_paid : false,
                     price: this.editFlag ? this.quiz.price : 0,
@@ -185,7 +185,7 @@
                     is_active: this.editFlag ? this.quiz.is_active : false,
                     is_private: this.editFlag ? this.quiz.is_private : false,
                 },
-                subCategories: this.initialSubCategories,
+                categories: this.initialCategories,
                 editorUrl: window.CKEditorURL,
                 editorConfig: {
                     contentsLangDirection: this.$page.props.rtl ? 'rtl' : 'ltr',
@@ -207,7 +207,7 @@
                     title: {
                         required,
                     },
-                    sub_category_id: {
+                    category_id: {
                         required
                     },
                     quiz_type_id: {
@@ -272,16 +272,16 @@
                     },
                 });
             },
-            searchSubCategories(search, loading) {
+            searchCategories(search, loading) {
                 if(search !== '') {
                     let _this = this;
                     loading(true);
                     clearTimeout(this.debounce);
-                    this.subCategories = [];
+                    this.categories = [];
                     this.debounce = setTimeout(() => {
-                        axios.get(route('search_sub_categories', {query: search}))
+                        axios.get(route('search_categories', {query: search}))
                             .then(function (response) {
-                                _this.subCategories = response.data.subCategories;
+                                _this.categories = response.data.categories;
                                 loading(false);
                             })
                             .catch(function (error) {

@@ -378,12 +378,12 @@
                         active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
                         items: [
                             {
-                                label:'Sections',
+                                label:'Exam',
                                 url: route('sections.index'),
                                 active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
                             },
                             {
-                                label:'Skills',
+                                label:'Mocks',
                                 url: route('skills.index'),
                                 active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
                             },

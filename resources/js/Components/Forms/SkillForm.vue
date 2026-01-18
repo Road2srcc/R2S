@@ -17,7 +17,7 @@
         </div>
         <form v-else class="my-6 w-11/12 mx-auto xl:w-full xl:mx-0" @submit.prevent="submitForm">
             <div class="w-full flex flex-col mb-6">
-                <label for="name" class="pb-2 font-semibold text-gray-800">{{ __('Skill') }} {{ __('Name') }}</label>
+                <label for="name" class="pb-2 font-semibold text-gray-800">{{ __('Mock') }} {{ __('Name') }}</label>
                 <InputText type="text"
                            id="name"
                            v-model="form.name"

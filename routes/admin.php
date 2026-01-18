@@ -230,6 +230,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('admin')->group(function
     Route::get('/search_plans', [PlanCrudController::class, 'search'])->name('search_plans');
     Route::get('/search_comprehensions', [ComprehensionCrudController::class, 'search'])->name('search_comprehensions');
     Route::get('/search_sub_categories', [SubCategoryCrudController::class, 'search'])->name('search_sub_categories');
+    Route::get('/search_categories', [CategoryCrudController::class, 'search'])->name('search_categories');
 
     /*
     |--------------------------------------------------------------------------

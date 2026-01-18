@@ -13,13 +13,13 @@ use App\Filters\QuizFilters;
 use App\Http\Requests\Admin\StoreQuizRequest;
 use App\Http\Requests\Admin\UpdateQuizRequest;
 use App\Http\Requests\Admin\UpdateQuizSettingsRequest;
+use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizType;
-use App\Models\SubCategory;
 use App\Repositories\QuizRepository;
 use App\Transformers\Admin\QuizSearchTransformer;
 use App\Transformers\Admin\QuizTransformer;
-use App\Transformers\Admin\SubCategorySearchTransformer;
+use App\Transformers\Admin\CategorySearchTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -44,7 +44,7 @@ class QuizCrudController extends Controller
     {
         return Inertia::render('Admin/Quizzes', [
             'quizzes' => function () use($filters) {
-                return fractal(Quiz::filter($filters)->with(['subCategory.category:id,name', 'subCategory:id,name,category_id', 'quizType:id,name'])
+                return fractal(Quiz::filter($filters)->with(['category:id,name', 'subCategory.category:id,name', 'subCategory:id,name,category_id', 'quizType:id,name'])
                     ->withCount(['quizSchedules' => function($query) {
                         $query->where('status', '=', 'active');
                     }])
@@ -82,8 +82,8 @@ class QuizCrudController extends Controller
         return Inertia::render('Admin/Quiz/Details', [
             'steps' => $this->repository->getSteps(),
             'quizTypes' => QuizType::select(['name', 'id'])->get(),
-            'initialSubCategories' => fractal(SubCategory::select(['id', 'name', 'category_id'])->latest()->take(10)->get(),
-                new SubCategorySearchTransformer())->toArray()['data']
+            'initialCategories' => fractal(Category::select(['id', 'name'])->latest()->take(10)->get(),
+                new CategorySearchTransformer())->toArray()['data']
         ]);
     }
 
@@ -121,17 +121,16 @@ class QuizCrudController extends Controller
     public function edit($id)
     {
         $quiz = Quiz::find($id);
+        $initialCategoryId = $quiz->category_id ?? ($quiz->subCategory->category_id ?? null);
         return Inertia::render('Admin/Quiz/Details', [
             'steps' => $this->repository->getSteps($quiz->id, 'details'),
             'quizTypes' => QuizType::select(['name', 'id'])->get(),
             'editFlag' => true,
             'quiz' => $quiz,
             'quizId' => $quiz->id,
-            'initialSubCategories' => fractal(SubCategory::select(['id', 'name', 'category_id'])
-                ->with('category:id,name')
-                ->where('id', $quiz->sub_category_id)
-                ->get(), new SubCategorySearchTransformer())
-                ->toArray()['data'],
+            'initialCategories' => $initialCategoryId
+                ? fractal(Category::select(['id', 'name'])->where('id', $initialCategoryId)->get(), new CategorySearchTransformer())->toArray()['data']
+                : [],
         ]);
     }
 

@@ -1659,18 +1659,6 @@ var map = {
 		"/js/vendor",
 		"resources_js_Pages_User_MyPayments_vue"
 	],
-	"./User/MyPractice": [
-		"./resources/js/Pages/User/MyPractice.vue",
-		"js/vendor-vue",
-		"/js/vendor",
-		"resources_js_Pages_User_MyPractice_vue"
-	],
-	"./User/MyPractice.vue": [
-		"./resources/js/Pages/User/MyPractice.vue",
-		"js/vendor-vue",
-		"/js/vendor",
-		"resources_js_Pages_User_MyPractice_vue"
-	],
 	"./User/MyProgress": [
 		"./resources/js/Pages/User/MyProgress.vue",
 		"js/vendor-vue",

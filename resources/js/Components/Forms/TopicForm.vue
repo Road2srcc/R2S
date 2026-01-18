@@ -28,7 +28,7 @@
                 <small id="name-help" v-if="errors.name" class="p-invalid">{{ errors.name }}</small>
             </div>
             <div class="w-full flex flex-col mb-6">
-                <label for="skill" class="pb-2 font-semibold text-gray-800">{{ __('Skill') }}<span class="ml-1 text-red-400">*</span></label>
+                <label for="skill" class="pb-2 font-semibold text-gray-800">{{ __('Mock') }}<span class="ml-1 text-red-400">*</span></label>
                 <v-select id="skill" v-model="form.skill_id" :options="skills" :reduce="sk => sk.id" label="name" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
                     <template v-slot:no-options="{ search, searching }">
                         <template v-if="searching">{{ __('No results were found for this search') }}.</template>

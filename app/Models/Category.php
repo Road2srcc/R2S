@@ -70,6 +70,11 @@ class Category extends Model
         return $this->hasMany(SubCategory::class);
     }
 
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
     public function plans()
     {
         return $this->morphMany(Plan::class, 'category');

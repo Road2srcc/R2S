@@ -36,4 +36,15 @@ class QuizFilters extends QueryFilter
     {
         return $this->builder->where('is_active', $query);
     }
+
+    public function category($query = "")
+    {
+        return $this->builder->where(function ($q) use ($query) {
+            $q->whereHas('category', function ($sq) use ($query) {
+                $sq->where('name', 'like', '%'.$query.'%');
+            })->orWhereHas('subCategory.category', function ($sq) use ($query) {
+                $sq->where('name', 'like', '%'.$query.'%');
+            });
+        });
+    }
 }

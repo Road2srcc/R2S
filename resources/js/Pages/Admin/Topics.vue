@@ -128,7 +128,7 @@
                         sortable: false,
                     },
                     {
-                        label: this.__('Skill'),
+                        label: this.__('Mock'),
                         field: 'skill',
                         sortable: false,
                     },

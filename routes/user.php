@@ -163,7 +163,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/my-progress', [ProgressController::class, 'myProgress'])->name('my_progress');
-    Route::get('/my-practice', [ProgressController::class, 'myPractice'])->name('my_practice');
+
     Route::get('/my-exams', [ProgressController::class, 'myExams'])->name('my_exams');
     Route::get('/my-quizzes', [ProgressController::class, 'myQuizzes'])->name('my_quizzes');
 });
