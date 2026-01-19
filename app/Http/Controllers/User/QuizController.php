@@ -138,7 +138,7 @@ class QuizController extends Controller
             $session->completed_at = Carbon::now()->toDateTimeString();
             $session->update();
 
-            return redirect()->route('quiz_thank_you', ['quiz' => $quiz->slug, 'session' => $session->code]);
+            return redirect()->route('quiz_results', ['quiz' => $quiz->slug, 'session' => $session->code]);
         }
 
         return Inertia::render('User/QuizScreen', [
@@ -256,7 +256,7 @@ class QuizController extends Controller
         $session = QuizSession::with('questions')->where('code', $session)->firstOrFail();
 
         if($session->status == 'completed') {
-            return redirect()->route('quiz_thank_you', ['quiz' => $quiz->slug, 'session' => $session->code]);
+            return redirect()->route('quiz_results', ['quiz' => $quiz->slug, 'session' => $session->code]);
         }
 
         $session->results = $this->repository->sessionResults($session, $quiz);
@@ -264,7 +264,7 @@ class QuizController extends Controller
         $session->completed_at = Carbon::now()->toDateTimeString();
         $session->update();
 
-        return redirect()->route('quiz_thank_you', ['quiz' => $quiz->slug, 'session' => $session->code]);
+        return redirect()->route('quiz_results', ['quiz' => $quiz->slug, 'session' => $session->code]);
     }
 
     /**

@@ -1083,33 +1083,33 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           label: 'Exams',
           url: route('exams.index'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }, {
           label: 'Quiz Types',
           url: route('quiz-types.index'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }, {
           label: 'Exam Types',
           url: route('exam-types.index'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }]
       }, {
         label: 'Manage Learning',
         item_type: 'dropdown',
         icon: '<svg class="flex-shrink-0 w-5 h-5 ltr:mr-2 rtl:ml-2 transition group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>',
-        active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
+        active: this.$page.props.user.role_id === 'admin',
         items: [{
           label: 'Practice Sets',
           url: route('practice-sets.index'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }, {
           label: 'Lessons',
           url: route('practice.configure_lessons'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }, {
           label: 'Videos',
           url: route('practice.configure_videos'),
-          active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor'
+          active: this.$page.props.user.role_id === 'admin'
         }]
       }, {
         item_type: 'divider',
@@ -1140,13 +1140,13 @@ __webpack_require__.r(__webpack_exports__);
         label: 'Lesson Bank',
         item_type: 'link',
         icon: '<svg class="flex-shrink-0 w-5 h-5 ltr:mr-2 rtl:ml-2 transition group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>',
-        active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
+        active: this.$page.props.user.role_id === 'admin',
         url: route('lessons.index')
       }, {
         label: 'Video Bank',
         item_type: 'link',
         icon: '<svg class="flex-shrink-0 w-5 h-5 ltr:mr-2 rtl:ml-2 transition group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
-        active: this.$page.props.user.role_id === 'admin' || this.$page.props.user.role_id === 'instructor',
+        active: this.$page.props.user.role_id === 'admin',
         url: route('videos.index')
       }, {
         item_type: 'divider',

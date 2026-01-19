@@ -142,7 +142,7 @@ class ExamController extends Controller
             $session->completed_at = Carbon::now()->toDateTimeString();
             $session->update();
 
-            return redirect()->route('exam_thank_you', ['exam' => $exam->slug, 'session' => $session->code]);
+            return redirect()->route('exam_results', ['exam' => $exam->slug, 'session' => $session->code]);
         }
 
         return Inertia::render('User/ExamScreen', [
@@ -282,7 +282,7 @@ class ExamController extends Controller
         $session = ExamSession::with(['questions', 'sections'])->where('code', $session)->firstOrFail();
 
         if($session->status == 'completed') {
-            redirect()->route('exam_thank_you', ['exam' => $exam->slug, 'session' => $session->code]);
+            return redirect()->route('exam_results', ['exam' => $exam->slug, 'session' => $session->code]);
         }
 
         $session->total_time_taken = $request->get('total_time_taken');
@@ -305,7 +305,7 @@ class ExamController extends Controller
         $session->results = $this->repository->sessionResults($session, $exam);
         $session->update();
 
-        return redirect()->route('exam_thank_you', ['exam' => $exam->slug, 'session' => $session->code]);
+        return redirect()->route('exam_results', ['exam' => $exam->slug, 'session' => $session->code]);
     }
 
     /**

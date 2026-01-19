@@ -4,7 +4,7 @@
             <h4 class="page-heading">{{ __('Quizzes')}}</h4>
         </template>
         <template #actions>
-            <inertia-link :href="route('quizzes.create')" class="qt-btn qt-btn-success">
+            <inertia-link v-if="$page.props.user.role_id === 'admin'" :href="route('quizzes.create')" class="qt-btn qt-btn-success">
                 {{ __('New') }} {{ __('Quiz') }}
             </inertia-link>
         </template>
@@ -33,7 +33,7 @@
                             </div>
 
                             <!-- Actions Column -->
-                            <div v-else-if="props.column.field === 'actions'">
+                            <div v-else-if="props.column.field === 'actions' && $page.props.user.role_id === 'admin'">
                                 <actions-dropdown>
                                     <template #actions>
                                         <button @click="goToAnalytics(props.row.id)" class="action-item">{{ __('Analytics') }}</button>
@@ -98,7 +98,38 @@
                 createForm: false,
                 editForm: false,
                 currentId: null,
-                columns: [
+                options: {
+                    enabled: true,
+                    mode: 'pages',
+                    perPage: this.quizzes.meta.pagination.per_page,
+                    setCurrentPage: this.quizzes.meta.pagination.current_page,
+                    perPageDropdown: [10, 20, 50, 100],
+                    dropdownAllowAll: false,
+                },
+                serverParams: {
+                    columnFilters: {},
+                    sort: {
+                        field: '',
+                        type: '',
+                    },
+                    page: 1,
+                    perPage: 10
+                },
+                loading: false,
+            }
+        },
+        metaInfo() {
+            return {
+                title: this.title
+            }
+        },
+
+        computed: {
+            title() {
+                return this.__('Quizzes')+' - ' + this.$page.props.general.app_name;
+            },
+            columns() {
+                const baseColumns = [
                     {
                         label: this.__('Code'),
                         field: 'code',
@@ -166,43 +197,20 @@
                             filterDropdownItems: [{value: 1, text: this.__('Published')}, {value: 0, text: this.__('Draft')}],
                         },
                     },
-                    {
+                ];
+
+                // Only add Actions column for admin users
+                if (this.$page.props.user.role_id === 'admin') {
+                    baseColumns.push({
                         label: this.__('Actions'),
                         field: 'actions',
                         sortable: false,
                         width: '200px',
                         tdClass: 'text-center',
-                    }
-                ],
-                options: {
-                    enabled: true,
-                    mode: 'pages',
-                    perPage: this.quizzes.meta.pagination.per_page,
-                    setCurrentPage: this.quizzes.meta.pagination.current_page,
-                    perPageDropdown: [10, 20, 50, 100],
-                    dropdownAllowAll: false,
-                },
-                serverParams: {
-                    columnFilters: {},
-                    sort: {
-                        field: '',
-                        type: '',
-                    },
-                    page: 1,
-                    perPage: 10
-                },
-                loading: false,
-            }
-        },
-        metaInfo() {
-            return {
-                title: this.title
-            }
-        },
+                    });
+                }
 
-        computed: {
-            title() {
-                return this.__('Quizzes')+' - ' + this.$page.props.general.app_name;
+                return baseColumns;
             }
         },
         methods: {

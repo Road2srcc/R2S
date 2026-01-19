@@ -232,7 +232,7 @@
                             <bar-chart :chart-data="questionTimeChartDataComputed" :options="questionTimeChartOptions" />
                         </div>
                     </div>
-                    <p class="mt-4 text-xs text-gray-500 text-center flex items-center justify-center">
+                    <p class="mt-8 text-xs text-gray-500 text-center flex items-center justify-center">
                         <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
                         {{ __('Time spent per question (seconds)') }}
                     </p>
@@ -253,7 +253,7 @@
                             <line-chart :chart-data="progressChartDataComputed" :options="progressChartOptions" />
                         </div>
                     </div>
-                    <p class="mt-4 text-xs text-gray-500 text-center flex items-center justify-center">
+                    <p class="mt-8 text-xs text-gray-500 text-center flex items-center justify-center">
                         <svg class="w-4 h-4 mr-1 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
                         {{ __('Your score progression across multiple attempts') }}
                     </p>
@@ -360,7 +360,7 @@
                                 display: false
                             },
                             scaleLabel: {
-                                display: true,
+                                display: false,
                                 labelString: 'Questions',
                                 fontSize: 13,
                                 fontColor: '#374151'
@@ -416,7 +416,7 @@
                                 display: false
                             },
                             scaleLabel: {
-                                display: true,
+                                display: false,
                                 labelString: 'Topics',
                                 fontSize: 13,
                                 fontColor: '#374151'
@@ -468,7 +468,7 @@
                                 color: 'rgba(0, 0, 0, 0.05)'
                             },
                             scaleLabel: {
-                                display: true,
+                                display: false,
                                 labelString: 'Attempts',
                                 fontSize: 13,
                                 fontColor: '#374151'

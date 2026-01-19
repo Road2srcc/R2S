@@ -199,7 +199,7 @@ export default {
 
         onClickMock(mock) {
             if (mock && mock.is_paid && !mock.unlocked) {
-                window.location.assign(route("pricing"));
+                window.open("https://docs.google.com/forms/d/e/1FAIpQLScs9gtMg5V3w24zkQ6LnsBJbEN-gX5kqN-0PqET2ALjrcZywg/viewform?usp=sharing", "_blank");
                 return;
             }
 
