@@ -12,15 +12,18 @@ class WelcomeEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $verificationUrl;
 
     /**
      * Create a new message instance.
      *
      * @param $user
+     * @param $verificationUrl
      */
-    public function __construct($user)
+    public function __construct($user, $verificationUrl = null)
     {
         $this->user = $user;
+        $this->verificationUrl = $verificationUrl;
     }
 
     /**

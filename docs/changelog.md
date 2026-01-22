@@ -1,5 +1,75 @@
 # QwikTest - Changelog
 
+## [January 19, 2026] - Subscription Logic Granularity & Plan Management Fixes
+
+### 🎯 Overview
+
+Resolved critical issues related to subscription over-unlocking and admin plan management. Refined the search logic for better accuracy and fixed bugs in the plan editing workflow to allow granular content unlocking (e.g., individual mock tests).
+
+---
+
+### 💳 Subscription & Access Control
+
+#### 1. Individual Quiz (Mock) Unlocking
+
+**Problem:** Subscribing to a "Topic (Sub-Category)" plan was incorrectly unlocking all quizzes within that sub-category.
+
+**Solution:** Updated the access control logic to prioritize granular checks.
+
+-   **MockController & QuizController:** Now explicitly checks for `App\Models\Quiz` type subscriptions.
+-   **SubscriptionTrait:** Enhanced the `hasActiveSubscription` check to include `category_type` validation, preventing cross-type access leaks.
+
+#### 2. Polymorphic Resource Handling
+
+**Problem:** The `PlanTransformer` was crashing when trying to display plans linked to Quizzes because it expected a `name` column (Quizzes use `title`).
+
+**Solution:** Updated `PlanTransformer` and `PlanCrudController` to handle polymorphic relationships safely using fallback attribute logic (`name ?? title ?? 'N/A'`).
+
+---
+
+### 🛠️ Admin Plan Management
+
+#### 1. Plan Type Editing Enabled
+
+**Problem:** The "Plan Type" and "Resource" dropdowns were locked for existing plans, making it impossible to repurpose plans (e.g., from Sub-Category to Quiz).
+
+**Solution:** Unlocked these fields in `PlanForm.vue` and updated `UpdatePlanRequest` to allow mass-assignment of these fields during updates.
+
+---
+
+### 🔍 Search & Filtering
+
+#### 1. "Smart Strict" Category Search
+
+**Problem:** Searching for a category name was either too broad (matching everything in a sub-category) or too strict (missing quizzes linked only via sub-categories).
+
+**Solution:** Refined the `category` filter in `QuizFilters.php`.
+
+-   Directly assigned quizzes are prioritized.
+-   Quizzes linked via sub-categories are included only if they don't have a conflicting direct category assignment.
+
+---
+
+### 🗄️ Technical Details
+
+**Files Modified:**
+
+-   `app/Http/Controllers/User/MockController.php`
+-   `app/Http/Controllers/User/QuizController.php`
+-   `app/Http/Controllers/Admin/PlanCrudController.php`
+-   `app/Http/Requests/Admin/UpdatePlanRequest.php`
+-   `app/Transformers/Admin/PlanTransformer.php`
+-   `app/Filters/QuizFilters.php`
+-   `app/Traits/SubscriptionTrait.php`
+-   `resources/js/Components/Forms/PlanForm.vue`
+
+**Deployment Notes:**
+
+-   **Frontend Recompilation:** Run `npm run dev` to apply UI changes in the Plan Form.
+-   **Plan Correction:** Administrators should review existing plans and update "Plan Type" to "Quiz" for granular unlocking.
+
+---
+
 ## [January 18, 2026] - Quiz Category System Update & Terminology Refinement
 
 ### 🎯 Overview

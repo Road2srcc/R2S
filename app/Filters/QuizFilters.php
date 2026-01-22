@@ -40,10 +40,16 @@ class QuizFilters extends QueryFilter
     public function category($query = "")
     {
         return $this->builder->where(function ($q) use ($query) {
+            // Match if direct category matches
             $q->whereHas('category', function ($sq) use ($query) {
                 $sq->where('name', 'like', '%'.$query.'%');
-            })->orWhereHas('subCategory.category', function ($sq) use ($query) {
-                $sq->where('name', 'like', '%'.$query.'%');
+            })
+            // OR match if sub-category parent matches, 
+            // BUT ONLY if the quiz doesn't have a contradicting direct category
+            ->orWhere(function($sq) use ($query) {
+                $sq->whereHas('subCategory.category', function ($ssq) use ($query) {
+                    $ssq->where('name', 'like', '%'.$query.'%');
+                })->whereDoesntHave('category'); 
             });
         });
     }

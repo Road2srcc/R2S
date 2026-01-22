@@ -28,6 +28,15 @@ class SendWelcomeEmail
      */
     public function handle(Registered $event)
     {
-        Mail::to($event->user->email)->send(new WelcomeEmail($event->user));
+        $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(config('auth.verification.expire', 60)),
+            [
+                'id' => $event->user->getKey(),
+                'hash' => sha1($event->user->getEmailForVerification()),
+            ]
+        );
+
+        Mail::to($event->user->email)->send(new WelcomeEmail($event->user, $verificationUrl));
     }
 }

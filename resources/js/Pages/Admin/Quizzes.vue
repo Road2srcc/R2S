@@ -4,7 +4,7 @@
             <h4 class="page-heading">{{ __('Quizzes')}}</h4>
         </template>
         <template #actions>
-            <inertia-link v-if="$page.props.user.role_id === 'admin'" :href="route('quizzes.create')" class="qt-btn qt-btn-success">
+            <inertia-link v-if="['admin', 'instructor'].includes($page.props.user.role_id)" :href="route('quizzes.create')" class="qt-btn qt-btn-success">
                 {{ __('New') }} {{ __('Quiz') }}
             </inertia-link>
         </template>
@@ -162,6 +162,11 @@
                             filterValue: null,
                             trigger: 'enter',
                         },
+                        sortable: false,
+                    },
+                    {
+                        label: this.__('Sub-Category'),
+                        field: 'sub_category',
                         sortable: false,
                     },
                     {

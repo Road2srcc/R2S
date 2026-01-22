@@ -1051,6 +1051,10 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
         },
         sortable: false
       }, {
+        label: this.__('Sub-Category'),
+        field: 'sub_category',
+        sortable: false
+      }, {
         label: this.__('Type'),
         field: 'quizType',
         filterOptions: {
@@ -2618,7 +2622,7 @@ var render = function () {
           key: "actions",
           fn: function () {
             return [
-              _vm.$page.props.user.role_id === "admin"
+              ["admin", "instructor"].includes(_vm.$page.props.user.role_id)
                 ? _c(
                     "inertia-link",
                     {

@@ -89,7 +89,7 @@ class ExamScheduleController extends Controller
             'startsIn' => $startsIn,
             'allowAccess' => $allowAccess,
             'closesAt' => $closesAt,
-            'subscription' => request()->user()->hasActiveSubscription($exam->sub_category_id, 'exams'),
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$exam->id, $exam->sub_category_id, $exam->subCategory->category_id ?? null]), 'exams'),
         ]);
     }
 
@@ -104,7 +104,7 @@ class ExamScheduleController extends Controller
     public function initExamSchedule(Exam $exam, $schedule, LocalizationSettings $localization)
     {
         $examSchedule = ExamSchedule::with('userGroups:id,name')->where('code', $schedule)->firstOrFail();
-        $subscription = request()->user()->hasActiveSubscription($exam->sub_category_id, 'exams');
+        $subscription = request()->user()->hasActiveSubscription(array_filter([$exam->id, $exam->sub_category_id, $exam->subCategory->category_id ?? null]), 'exams');
 
         // Load completed exam sessions in this schedule
         $exam->loadCount(['sessions' => function ($query) use ($examSchedule) {

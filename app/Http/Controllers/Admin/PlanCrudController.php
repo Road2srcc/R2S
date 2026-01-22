@@ -12,8 +12,11 @@ use App\Http\Controllers\Controller;
 use App\Filters\PlanFilters;
 use App\Http\Requests\Admin\StorePlanRequest;
 use App\Http\Requests\Admin\UpdatePlanRequest;
+use App\Models\Category;
+use App\Models\Exam;
 use App\Models\Feature;
 use App\Models\Plan;
+use App\Models\Quiz;
 use App\Models\SubCategory;
 use App\Transformers\Admin\PlanSearchTransformer;
 use App\Transformers\Admin\PlanTransformer;
@@ -39,12 +42,15 @@ class PlanCrudController extends Controller
     {
         return Inertia::render('Admin/Plans', [
             'plans' => function () use($filters) {
-                return fractal(Plan::with('category:id,name')->filter($filters)
+                return fractal(Plan::with('category')->filter($filters)
                 ->paginate(request()->perPage != null ? request()->perPage : 10),
 		               new PlanTransformer())->toArray();
 		          },
             'features' => Feature::select(['id', 'name'])->active()->get(),
-            'subCategories' => SubCategory::select(['id', 'name'])->active()->get()
+            'categories' => Category::select(['id', 'name'])->active()->get(),
+            'subCategories' => SubCategory::select(['id', 'name'])->active()->get(),
+            'quizzes' => Quiz::select(['id', 'title as name'])->published()->get(),
+            'exams' => Exam::select(['id', 'title as name'])->published()->get(),
         ]);
     }
 

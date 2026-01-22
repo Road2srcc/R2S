@@ -25,6 +25,11 @@ trait SubscriptionTrait
                 $query->with('features');
             })
             ->whereIn('category_id', (array) $category)
+            ->where(function ($query) {
+                $query->whereIn('category_type', ['App\Models\Category', 'category'])
+                    ->orWhereIn('category_type', ['App\Models\SubCategory', 'sub_category'])
+                    ->orWhereIn('category_type', ['App\Models\Quiz', 'quiz']);
+            })
             ->where('ends_at', '>', now()->toDateTimeString())
             ->where('status', '=', 'active')
             ->first();

@@ -36,6 +36,8 @@ class UpdatePlanRequest extends FormRequest
             'has_discount' => ['required'],
             'discount_percentage' => ['required_if:has_discount,true'],
             'description' => ['nullable'],
+            'category_type' => ['required', 'string'],
+            'category_id' => ['required'],
             'sort_order' => ['required'],
             'feature_restrictions' => ['required'],
             'is_popular' => ['required'],

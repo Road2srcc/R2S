@@ -406,6 +406,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -434,7 +441,10 @@ __webpack_require__.r(__webpack_exports__);
     planId: Number,
     formErrors: Object,
     features: Array,
+    categories: Array,
     subCategories: Array,
+    quizzes: Array,
+    exams: Array,
     title: ''
   },
   data: function data() {
@@ -457,8 +467,35 @@ __webpack_require__.r(__webpack_exports__);
         features: []
       },
       formValidated: false,
-      loading: false
+      loading: false,
+      planTypes: [{
+        value: "App\\Models\\Category",
+        text: this.__('Category (Subject)')
+      }, {
+        value: "App\\Models\\SubCategory",
+        text: this.__('Sub-Category (Topic)')
+      }, {
+        value: "App\\Models\\Quiz",
+        text: this.__('Quiz (Mock Test)')
+      }, {
+        value: "App\\Models\\Exam",
+        text: this.__('Exam (Major)')
+      }]
     };
+  },
+  computed: {
+    resourceOptions: function resourceOptions() {
+      if (this.form.category_type === "App\\Models\\Category") {
+        return this.categories;
+      } else if (this.form.category_type === "App\\Models\\SubCategory") {
+        return this.subCategories;
+      } else if (this.form.category_type === "App\\Models\\Quiz") {
+        return this.quizzes;
+      } else if (this.form.category_type === "App\\Models\\Exam") {
+        return this.exams;
+      }
+      return [];
+    }
   },
   watch: {
     formErrors: function formErrors(val) {
@@ -503,6 +540,7 @@ __webpack_require__.r(__webpack_exports__);
           var data = response.data.plan;
           _this.form.name = data.name;
           _this.form.description = data.description;
+          _this.form.category_type = data.category_type;
           _this.form.category_id = data.category_id;
           _this.form.duration = data.duration;
           _this.form.price = data.price;
@@ -1410,7 +1448,10 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   props: {
     plans: Object,
     errors: Object,
+    categories: Array,
     subCategories: Array,
+    quizzes: Array,
+    exams: Array,
     features: Array
   },
   data: function data() {
@@ -2258,10 +2299,57 @@ var render = function () {
                   "label",
                   {
                     staticClass: "pb-2 font-semibold text-gray-800",
+                    attrs: { for: "category_type" },
+                  },
+                  [
+                    _vm._v(_vm._s(_vm.__("Plan Type"))),
+                    _c("span", { staticClass: "ml-1 text-red-400" }, [
+                      _vm._v("*"),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("v-select", {
+                  attrs: {
+                    id: "category_type",
+                    options: _vm.planTypes,
+                    reduce: function (type) {
+                      return type.value
+                    },
+                    label: "text",
+                    placeholder: _vm.__("Choose Type"),
+                    dir: _vm.$page.props.rtl ? "rtl" : "ltr",
+                  },
+                  model: {
+                    value: _vm.form.category_type,
+                    callback: function ($$v) {
+                      _vm.$set(_vm.form, "category_type", $$v)
+                    },
+                    expression: "form.category_type",
+                  },
+                }),
+                _vm._v(" "),
+                _vm.errors.category_type
+                  ? _c("small", { staticClass: "p-invalid" }, [
+                      _vm._v(_vm._s(_vm.errors.category_type)),
+                    ])
+                  : _vm._e(),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "w-full flex flex-col mb-6" },
+              [
+                _c(
+                  "label",
+                  {
+                    staticClass: "pb-2 font-semibold text-gray-800",
                     attrs: { for: "category_id" },
                   },
                   [
-                    _vm._v(_vm._s(_vm.__("Category"))),
+                    _vm._v(_vm._s(_vm.__("Resource"))),
                     _c("span", { staticClass: "ml-1 text-red-400" }, [
                       _vm._v("*"),
                     ]),
@@ -2271,13 +2359,12 @@ var render = function () {
                 _c("v-select", {
                   attrs: {
                     id: "category_id",
-                    options: _vm.subCategories,
+                    options: _vm.resourceOptions,
                     reduce: function (cat) {
                       return cat.id
                     },
                     label: "name",
-                    placeholder: _vm.__("Choose Category"),
-                    disabled: _vm.editFlag,
+                    placeholder: _vm.__("Choose Resource"),
                     dir: _vm.$page.props.rtl ? "rtl" : "ltr",
                   },
                   scopedSlots: _vm._u([
@@ -2299,7 +2386,8 @@ var render = function () {
                               ]
                             : _c("em", { staticClass: "opacity-50" }, [
                                 _vm._v(
-                                  _vm._s(_vm.__("Start typing to search")) + "."
+                                  _vm._s(_vm.__("Choose a Plan Type first")) +
+                                    "."
                                 ),
                               ]),
                         ]
@@ -4117,7 +4205,10 @@ var render = function () {
                     _c("PlanForm", {
                       attrs: {
                         "form-errors": _vm.errors,
+                        categories: _vm.categories,
                         "sub-categories": _vm.subCategories,
+                        quizzes: _vm.quizzes,
+                        exams: _vm.exams,
                         features: _vm.features,
                         title: _vm.__("New") + " " + _vm.__("Plan"),
                       },
@@ -4146,7 +4237,10 @@ var render = function () {
                     _c("PlanForm", {
                       attrs: {
                         "edit-flag": _vm.editForm,
+                        categories: _vm.categories,
                         "sub-categories": _vm.subCategories,
+                        quizzes: _vm.quizzes,
+                        exams: _vm.exams,
                         "plan-id": _vm.currentId,
                         features: _vm.features,
                         "form-errors": _vm.errors,

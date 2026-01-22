@@ -26,6 +26,7 @@ class QuizTransformer extends TransformerAbstract
             'code' => $quiz->code,
             'title' => $quiz->title,
             'category' => $quiz->category->name ?? $quiz->subCategory->category->name ?? 'N/A',
+            'sub_category' => $quiz->subCategory->name ?? 'N/A',
             'quizType' => $quiz->quizType->name,
             'questions' => $quiz->total_questions.' Questions',
             'schedules' => $quiz->quiz_schedules_count > 0 ? $quiz->quiz_schedules_count : 'No Schedules',

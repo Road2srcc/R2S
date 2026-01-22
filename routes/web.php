@@ -7,6 +7,9 @@
  */
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AppInstallController;
@@ -24,6 +27,22 @@ use App\Http\Controllers\WebHookController;
 */
 
 Route::get('/', [SiteController::class, 'index'])->name('welcome');
+
+// Overriding default Fortify verify route to allow access for unverified (blocked) users
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+    $user = User::findOrFail($request->route('id'));
+
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+        throw new \Illuminate\Auth\Access\AuthorizationException;
+    }
+
+    if ($user->markEmailAsVerified()) {
+        event(new Verified($user));
+    }
+
+    return redirect()->route('login')->with('status', 'Your email has been verified! You can now log in.');
+})->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+
 Route::get('/explore/{category}', [SiteController::class, 'explore'])->name('explore');
 Route::get('/pricing', [SiteController::class, 'pricing'])->name('pricing');
 

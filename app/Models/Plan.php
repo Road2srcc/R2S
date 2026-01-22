@@ -98,7 +98,8 @@ class Plan extends Model
 
     public function getFullNameAttribute()
     {
-        return "{$this->category->name} {$this->name} - {$this->duration} Months Plan";
+        $categoryName = $this->category->name ?? $this->category->title ?? 'N/A';
+        return "{$categoryName} {$this->name} - {$this->duration} Months Plan";
     }
 
     public function getFormattedPriceAttribute()

@@ -59,7 +59,7 @@ class QuizController extends Controller
         return Inertia::render('User/QuizInstructions', [
             'quiz' => fractal($quiz, new QuizDetailTransformer())->toArray()['data'],
             'instructions' => $this->repository->getInstructions($quiz),
-            'subscription' => request()->user()->hasActiveSubscription(array_filter([$quiz->category_id, $quiz->sub_category_id]), 'quizzes'),
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$quiz->id, $quiz->category_id, $quiz->sub_category_id]), 'quizzes'),
         ]);
     }
 
@@ -71,7 +71,7 @@ class QuizController extends Controller
      */
     public function initQuiz(Quiz $quiz)
     {
-        $subscription = request()->user()->hasActiveSubscription(array_filter([$quiz->category_id, $quiz->sub_category_id]), 'quizzes');
+        $subscription = request()->user()->hasActiveSubscription(array_filter([$quiz->id, $quiz->category_id, $quiz->sub_category_id]), 'quizzes');
 
         // load completed quiz sessions
         $quiz->loadCount(['sessions' => function ($query) {

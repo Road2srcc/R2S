@@ -56,10 +56,10 @@
 
                     <!-- Sidebar Forms -->
                     <Sidebar position="right" :visible.sync="createForm" class="p-sidebar-md">
-                        <PlanForm :form-errors="errors" :sub-categories="subCategories" @close="createForm = false" :features="features" :title="__('New') +' '+__('Plan')"/>
+                        <PlanForm :form-errors="errors" :categories="categories" :sub-categories="subCategories" :quizzes="quizzes" :exams="exams" @close="createForm = false" :features="features" :title="__('New') +' '+__('Plan')"/>
                     </Sidebar>
                     <Sidebar position="right" :visible.sync="editForm" class="p-sidebar-md">
-                        <PlanForm :edit-flag.sync="editForm" :sub-categories="subCategories" :plan-id="currentId" :features="features" :form-errors="errors"
+                        <PlanForm :edit-flag.sync="editForm" :categories="categories" :sub-categories="subCategories" :quizzes="quizzes" :exams="exams" :plan-id="currentId" :features="features" :form-errors="errors"
                                        @close="editForm = false" :title="__('Edit') +' '+__('Plan')"/>
                     </Sidebar>
 
@@ -99,7 +99,10 @@
         props: {
             plans: Object,
             errors: Object,
+            categories: Array,
             subCategories: Array,
+            quizzes: Array,
+            exams: Array,
             features: Array,
         },
         data() {

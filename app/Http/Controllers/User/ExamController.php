@@ -63,7 +63,7 @@ class ExamController extends Controller
         return Inertia::render('User/ExamInstructions', [
             'exam' => fractal($exam, new ExamDetailTransformer())->toArray()['data'],
             'instructions' => $this->repository->getInstructions($exam),
-            'subscription' => request()->user()->hasActiveSubscription($exam->sub_category_id, 'exams'),
+            'subscription' => request()->user()->hasActiveSubscription(array_filter([$exam->id, $exam->sub_category_id, $exam->subCategory->category_id ?? null]), 'exams'),
         ]);
     }
 
@@ -75,7 +75,7 @@ class ExamController extends Controller
      */
     public function initExam(Exam $exam)
     {
-        $subscription = request()->user()->hasActiveSubscription($exam->sub_category_id, 'exams');
+        $subscription = request()->user()->hasActiveSubscription(array_filter([$exam->id, $exam->sub_category_id, $exam->subCategory->category_id ?? null]), 'exams');
 
         // load completed exam sessions
         $exam->loadCount(['sessions' => function ($query) {

@@ -26,7 +26,7 @@ class PlanTransformer extends TransformerAbstract
         return [
             'id' => $plan->id,
             'name' => $plan->name,
-            'category' => $plan->category->name,
+            'category' => $plan->category->name ?? $plan->category->title ?? 'N/A',
             'price' => formatPrice($plan->price, $paymentSettings->currency_symbol, $paymentSettings->currency_symbol_position),
             'code' => $plan->code,
             'duration' => $plan->duration.' '.__('Months'),

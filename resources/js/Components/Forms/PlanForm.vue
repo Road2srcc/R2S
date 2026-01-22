@@ -16,13 +16,20 @@
             <form-switch-shimmer></form-switch-shimmer>
         </div>
         <form v-else class="my-6 w-11/12 mx-auto xl:w-full xl:mx-0" @submit.prevent="submitForm">
-            <!-- Category Dropdown -->
+            <!-- Plan Type -->
             <div class="w-full flex flex-col mb-6">
-                <label for="category_id" class="pb-2 font-semibold text-gray-800">{{ __('Category') }}<span class="ml-1 text-red-400">*</span></label>
-                <v-select id="category_id" v-model="form.category_id" :options="subCategories" :reduce="cat => cat.id" label="name" :placeholder="__('Choose Category')" :disabled="editFlag" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
+                <label for="category_type" class="pb-2 font-semibold text-gray-800">{{ __('Plan Type') }}<span class="ml-1 text-red-400">*</span></label>
+                <v-select id="category_type" v-model="form.category_type" :options="planTypes" :reduce="type => type.value" label="text" :placeholder="__('Choose Type')" :dir="$page.props.rtl ? 'rtl' : 'ltr'"></v-select>
+                <small v-if="errors.category_type" class="p-invalid">{{ errors.category_type }}</small>
+            </div>
+
+            <!-- Category/Resource Dropdown -->
+            <div class="w-full flex flex-col mb-6">
+                <label for="category_id" class="pb-2 font-semibold text-gray-800">{{ __('Resource') }}<span class="ml-1 text-red-400">*</span></label>
+                <v-select id="category_id" v-model="form.category_id" :options="resourceOptions" :reduce="cat => cat.id" label="name" :placeholder="__('Choose Resource')" :dir="$page.props.rtl ? 'rtl' : 'ltr'">
                     <template v-slot:no-options="{ search, searching }">
                         <template v-if="searching">{{ __('No results were found for this search') }}.</template>
-                        <em v-else class="opacity-50">{{ __('Start typing to search') }}.</em>
+                        <em v-else class="opacity-50">{{ __('Choose a Plan Type first') }}.</em>
                     </template>
                 </v-select>
                 <small id="userRole-help" v-if="errors.category_id" class="p-invalid">{{ errors.category_id }}</small>
@@ -176,7 +183,10 @@
             planId: Number,
             formErrors: Object,
             features: Array,
+            categories: Array,
             subCategories: Array,
+            quizzes: Array,
+            exams: Array,
             title: ''
         },
         data() {
@@ -200,6 +210,26 @@
                 },
                 formValidated: false,
                 loading: false,
+                planTypes: [
+                    { value: "App\\Models\\Category", text: this.__('Category (Subject)') },
+                    { value: "App\\Models\\SubCategory", text: this.__('Sub-Category (Topic)') },
+                    { value: "App\\Models\\Quiz", text: this.__('Quiz (Mock Test)') },
+                    { value: "App\\Models\\Exam", text: this.__('Exam (Major)') },
+                ]
+            }
+        },
+        computed: {
+            resourceOptions() {
+                if (this.form.category_type === "App\\Models\\Category") {
+                    return this.categories;
+                } else if (this.form.category_type === "App\\Models\\SubCategory") {
+                    return this.subCategories;
+                } else if (this.form.category_type === "App\\Models\\Quiz") {
+                    return this.quizzes;
+                } else if (this.form.category_type === "App\\Models\\Exam") {
+                    return this.exams;
+                }
+                return [];
             }
         },
         watch: {
@@ -240,6 +270,7 @@
                             let data = response.data.plan;
                             _this.form.name = data.name;
                             _this.form.description = data.description;
+                            _this.form.category_type = data.category_type;
                             _this.form.category_id = data.category_id;
                             _this.form.duration = data.duration;
                             _this.form.price = data.price;

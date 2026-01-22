@@ -26,7 +26,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
     }
 
     /**
@@ -60,6 +63,15 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             if ($user && Hash::check($request->password, $user->password)) {
+                // Check if email is verified
+                if (!$user->hasVerifiedEmail()) {
+                    event(new \Illuminate\Auth\Events\Registered($user));
+
+                    throw ValidationException::withMessages([
+                        Fortify::username() => ['Your email is not verified. A new verification link has been sent to your email inbox.'],
+                    ]);
+                }
+
                 if(!config('qwiktest.demo_mode')) {
                     //Delete Other Browser Sessions on Login
                     $guard = app(StatefulGuard::class);

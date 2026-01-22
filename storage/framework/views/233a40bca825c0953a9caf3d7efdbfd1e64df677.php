@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,69 +11,82 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fa;
             line-height: 1.6;
         }
+
         .email-wrapper {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
+
         .email-container {
             background-color: #ffffff;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
+
         .email-header {
             background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             padding: 40px 30px;
             text-align: center;
         }
+
         .email-header h1 {
             color: #ffffff;
             font-size: 28px;
             font-weight: 700;
             margin: 0;
         }
+
         .email-header p {
             color: rgba(255, 255, 255, 0.9);
             font-size: 16px;
             margin-top: 8px;
         }
+
         .email-body {
             padding: 40px 30px;
         }
+
         .greeting {
             font-size: 22px;
             color: #1f2937;
             font-weight: 600;
             margin-bottom: 20px;
         }
+
         .message {
             color: #4b5563;
             font-size: 16px;
             margin-bottom: 25px;
         }
+
         .feature-list {
             background-color: #f9fafb;
             border-radius: 8px;
             padding: 25px;
             margin-bottom: 30px;
         }
+
         .feature-list h3 {
             color: #1f2937;
             font-size: 18px;
             margin-bottom: 15px;
         }
+
         .feature-item {
             display: flex;
             align-items: center;
             margin-bottom: 12px;
             color: #4b5563;
         }
+
         .feature-icon {
             width: 24px;
             height: 24px;
@@ -85,6 +99,7 @@
             color: #ffffff;
             font-size: 12px;
         }
+
         .cta-button {
             display: inline-block;
             background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
@@ -97,29 +112,35 @@
             text-align: center;
             margin: 20px 0;
         }
+
         .cta-button:hover {
             background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
         }
+
         .email-footer {
             background-color: #f9fafb;
             padding: 30px;
             text-align: center;
             border-top: 1px solid #e5e7eb;
         }
+
         .footer-text {
             color: #6b7280;
             font-size: 14px;
             margin-bottom: 10px;
         }
+
         .social-links {
             margin-top: 15px;
         }
+
         .social-links a {
             color: #f97316;
             text-decoration: none;
             margin: 0 10px;
             font-size: 14px;
         }
+
         .divider {
             height: 1px;
             background-color: #e5e7eb;
@@ -127,6 +148,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="email-wrapper">
         <div class="email-container">
@@ -139,9 +161,11 @@
             <!-- Body -->
             <div class="email-body">
                 <p class="greeting">Hi <?php echo e($user->first_name); ?>,</p>
-                
+
                 <p class="message">
-                    Thank you for joining <strong><?php echo e(config('app.name')); ?></strong>! We're thrilled to have you as part of our learning community. Your account has been successfully created and you're all set to begin your preparation journey.
+                    Thank you for joining <strong><?php echo e(config('app.name')); ?></strong>! We're thrilled to have you as part
+                    of our learning community. Your account has been successfully created and you're all set to begin
+                    your preparation journey.
                 </p>
 
                 <div class="feature-list">
@@ -164,16 +188,23 @@
                     </div>
                 </div>
 
+                <p class="message"
+                    style="background-color: #fff7ed; padding: 15px; border-radius: 8px; border: 1px solid #ffedd5; font-size: 15px; color: #9a3412;">
+                    <strong>Verification Required:</strong> Please click the button below to verify your email address
+                    and activate your account.
+                </p>
+
                 <div style="text-align: center;">
-                    <a href="<?php echo e(config('app.url')); ?>/login" class="cta-button">
-                        Start Learning Now →
+                    <a href="<?php echo e($verificationUrl); ?>" class="cta-button">
+                        Verify Email Address →
                     </a>
                 </div>
 
                 <div class="divider"></div>
 
                 <p class="message">
-                    If you have any questions or need assistance, feel free to reach out to our support team. We're here to help you succeed!
+                    If you have any questions or need assistance, feel free to reach out to our support team. We're here
+                    to help you succeed!
                 </p>
             </div>
 
@@ -193,5 +224,6 @@
         </div>
     </div>
 </body>
+
 </html>
 <?php /**PATH C:\xampp\htdocs\resources\views/emails/welcome.blade.php ENDPATH**/ ?>

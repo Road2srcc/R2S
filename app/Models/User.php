@@ -26,7 +26,7 @@ use App\Filters\QueryFilter;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Illuminate\Database\Eloquent\Builder;
 
-class User extends Authenticatable implements Wallet
+class User extends Authenticatable implements Wallet, MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -58,6 +58,16 @@ class User extends Authenticatable implements Wallet
         'preferences',
         'email_verified_at'
     ];
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        // We handle this in the SendWelcomeEmail listener to send a combined email.
+    }
 
     protected $hidden = [
         'password',
