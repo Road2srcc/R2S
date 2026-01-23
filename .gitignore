@@ -1,22 +1,35 @@
+# Dependencies
 /node_modules
+/vendor
+
+# Laravel generated files
 /public/hot
 /public/storage
-/public/uploads
 /storage/*.key
 /storage/dotenv-editor
 /storage/framework/laravel-excel
 /storage/debugbar
 /storage/installed
-/vendor
+
+# IDE folders
 /.idea
 /.vscode
 /.fleet
+
+# Environment files (contains secrets)
 .env
 .env.backup
+.env.production
+
+# Test cache
 .phpunit.result.cache
+
+# Docker override
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
+
+# Package manager logs
 npm-debug.log
 yarn-error.log
 
@@ -33,3 +46,23 @@ error_log
 # Cache files
 /bootstrap/cache/*
 !/bootstrap/cache/.gitkeep
+
+# Framework cache (should be generated on server)
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+!/storage/framework/cache/data/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+
+# ============================================
+# IMPORTANT: Files TRACKED for production
+# ============================================
+# The following are NOT ignored (tracked in git):
+# - /storage/app/public/** (site assets, logos, uploads)
+# - /public/css/** (compiled CSS)
+# - /public/js/** (compiled JS)
+# - /public/images/** (static images)
+# - /public/mix-manifest.json
+# ============================================
