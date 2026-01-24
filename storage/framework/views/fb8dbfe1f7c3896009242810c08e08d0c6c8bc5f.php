@@ -1,61 +1,307 @@
-<?php if($homePageSettings->enable_footer): ?>
-    <footer class="bg-primary">
-        <div tabindex="0" aria-label="footer" class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 focus:outline-none mx-auto container flex flex-col items-start sm:items-center justify-center">
-            <img class="h-10" src="<?php echo e(asset('storage/'.$siteSettings['white_logo_path'])); ?>" alt="<?php echo e($siteSettings['app_name']); ?>">
-            <div class="text-black flex flex-col md:items-center f-f-l pt-3">
-                <h1 tabindex="0" class="focus:outline-none text-lg text-secondary"><?php echo e($siteSettings['tag_line']); ?></h1>
-                <?php if($footerSettings->enable_social_links): ?>
-                    <div class="flex items-center space-x-6 rtl:space-x-reverse mt-5 md:mt-10 text-base text-color f-f-l">
-                        <?php $__currentLoopData = $footerSettings->social_links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $socialLink): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php if($socialLink[1]): ?>
-                                <a href="<?php echo e($socialLink[2]); ?>" target="_blank" class="text-white hover:opacity-90">
-                                    <span class="sr-only"><?php echo e($socialLink[0]); ?></span>
-                                    <?php if($key == 'facebook'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                    <?php endif; ?>
-                                    <?php if($key == 'twitter'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-                                    <?php endif; ?>
-                                    <?php if($key == 'instagram'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
-                                    <?php endif; ?>
-                                    <?php if($key == 'youtube'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>YouTube</title><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                                    <?php endif; ?>
-                                    <?php if($key == 'linkedin'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                    <?php endif; ?>
-                                    <?php if($key == 'github'): ?>
-                                        <svg class="h-6 w-6" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                                    <?php endif; ?>
-                                </a>
-                            <?php endif; ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </div>
-                <?php endif; ?>
+<style>
+    /* Footer Section Styles - Pure CSS (No Tailwind) */
+    .r2s-footer {
+        position: relative;
+        padding: 100px 16px 40px;
+        background: linear-gradient(to bottom, #1e1b4b 0%, #312e81 100%);
+        overflow: hidden;
+    }
 
-                <?php if($footerSettings->enable_links): ?>
-                    <div class="my-6 text-base text-color f-f-l">
-                        <ul class="md:flex md:gap-6 items-center">
-                            <?php $__currentLoopData = $footerSettings->footer_links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $footerLink): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php if($footerLink[2]): ?>
-                                    <li class="cursor-pointer pt-4 lg:py-0">
-                                        <a href="<?php echo e($footerLink[1]); ?>" class="focus:outline-none focus:underline hover:underline text-base text-white opacity-80"><?php echo e($footerLink[0]); ?></a>
-                                    </li>
-                                <?php endif; ?>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+    .r2s-footer-container {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Tagline */
+    .r2s-footer-tagline {
+        text-align: center;
+        margin-bottom: 48px;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .r2s-footer-tagline.r2s-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .r2s-footer-tagline h2 {
+        font-size: 1.75rem;
+        font-weight: 500;
+        color: #ffffff;
+        margin: 0;
+        line-height: 1.4;
+        font-family: 'Georgia', 'Times New Roman', serif;
+        font-style: italic;
+    }
+
+    /* Links Container */
+    .r2s-footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 80px;
+        margin-bottom: 48px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+    }
+
+    .r2s-footer-links.r2s-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .r2s-footer-column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .r2s-footer-link {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+        text-align: center;
+        position: relative;
+    }
+
+    .r2s-footer-link:hover {
+        color: #ffffff;
+        transform: translateX(5px);
+    }
+
+    .r2s-footer-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 1px;
+        background-color: #ffffff;
+        transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .r2s-footer-link:hover::after {
+        width: 100%;
+        left: 0;
+    }
+
+    /* Copyright */
+    .r2s-footer-copyright {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        opacity: 0;
+        transition: opacity 0.8s ease 0.4s;
+    }
+
+    .r2s-footer-copyright.r2s-visible {
+        opacity: 1;
+    }
+
+    /* Cloud decorations */
+    .r2s-footer-clouds {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 150px;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .r2s-footer-cloud {
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .r2s-footer-cloud.r2s-visible {
+        opacity: 1;
+    }
+
+    .r2s-footer-cloud img {
+        filter: brightness(1.1);
+    }
+
+    .r2s-footer-cloud-left {
+        left: -5%;
+        transform: translateX(-50px);
+    }
+
+    .r2s-footer-cloud-left.r2s-visible {
+        transform: translateX(0);
+    }
+
+    .r2s-footer-cloud-left img {
+        width: 280px;
+        height: auto;
+        animation: r2s-cloud-float-left 6s ease-in-out infinite;
+    }
+
+    .r2s-footer-cloud-right {
+        right: -5%;
+        transform: translateX(50px);
+    }
+
+    .r2s-footer-cloud-right.r2s-visible {
+        transform: translateX(0);
+    }
+
+    .r2s-footer-cloud-right img {
+        width: 320px;
+        height: auto;
+        animation: r2s-cloud-float-right 7s ease-in-out infinite;
+        animation-delay: 0.5s;
+    }
+
+    @keyframes  r2s-cloud-float-left {
+
+        0%,
+        100% {
+            transform: translateX(0) translateY(0);
+        }
+
+        50% {
+            transform: translateX(10px) translateY(-8px);
+        }
+    }
+
+    @keyframes  r2s-cloud-float-right {
+
+        0%,
+        100% {
+            transform: translateX(0) translateY(0);
+        }
+
+        50% {
+            transform: translateX(-10px) translateY(-8px);
+        }
+    }
+
+    /* Responsive */
+    @media (min-width: 640px) {
+        .r2s-footer-tagline h2 {
+            font-size: 2.25rem;
+        }
+
+        .r2s-footer-links {
+            gap: 120px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .r2s-footer {
+            padding: 120px 32px 60px;
+        }
+
+        .r2s-footer-tagline h2 {
+            font-size: 2.75rem;
+        }
+
+        .r2s-footer-cloud-left img {
+            width: 350px;
+        }
+
+        .r2s-footer-cloud-right img {
+            width: 400px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .r2s-footer-links {
+            gap: 40px;
+        }
+
+        .r2s-footer-cloud-left img,
+        .r2s-footer-cloud-right img {
+            width: 180px;
+        }
+    }
+
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+
+        .r2s-footer-tagline,
+        .r2s-footer-links,
+        .r2s-footer-copyright,
+        .r2s-footer-cloud,
+        .r2s-footer-cloud img {
+            transition: none;
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
+
+<footer class="r2s-footer">
+    <!-- Cloud decorations -->
+    <div class="r2s-footer-clouds">
+        <div class="r2s-footer-cloud r2s-footer-cloud-left" data-animate-footer>
+            <img src="<?php echo e(asset('images/cloud.png')); ?>" alt="">
+        </div>
+        <div class="r2s-footer-cloud r2s-footer-cloud-right" data-animate-footer>
+            <img src="<?php echo e(asset('images/cloud.png')); ?>" alt="">
+        </div>
+    </div>
+
+    <div class="r2s-footer-container">
+        <!-- Tagline -->
+        <div class="r2s-footer-tagline" data-animate-footer>
+            <h2>Built by students. Trusted by aspirants.</h2>
+        </div>
+
+        <!-- Links -->
+        <div class="r2s-footer-links" data-animate-footer>
+            <!-- Left Column -->
+            <div class="r2s-footer-column">
+                <a href="/privacy-policy" class="r2s-footer-link">Privacy</a>
+                <a href="/terms-and-conditions" class="r2s-footer-link">Terms</a>
+                <a href="/refund-policy" class="r2s-footer-link">Refund</a>
+                <a href="/contact" class="r2s-footer-link">Contact</a>
             </div>
 
-            <div class="w-full mt-12 border-t border-white border-opacity-50 pt-8">
-                <p class="text-base text-white opacity-80 xl:text-center">
-                    <span>©<?php echo e(date("Y")); ?> <?php echo e(config('app.name')); ?>. </span>
-                    <span><?php echo e($footerSettings->copyright_text); ?></span>
-                </p>
+            <!-- Right Column -->
+            <div class="r2s-footer-column">
+                <a href="#" class="r2s-footer-link">Blog</a>
+                <a href="https://linkedin.com/company/road2srcc" target="_blank" class="r2s-footer-link">Linkedin</a>
+                <a href="https://twitter.com/road2srcc" target="_blank" class="r2s-footer-link">X (ex-Twitter)</a>
+                <a href="https://instagram.com/road2srcc" target="_blank" class="r2s-footer-link">Instagram</a>
             </div>
         </div>
-    </footer>
-<?php endif; ?>
+
+        <!-- Copyright -->
+        <div class="r2s-footer-copyright" data-animate-footer>
+            <p>© <?php echo e(date('Y')); ?> Road2SRCC.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Intersection Observer for footer scroll-triggered animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const footerElements = document.querySelectorAll('[data-animate-footer]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('r2s-visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        footerElements.forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>
 <?php /**PATH C:\xampp\htdocs\resources\views/components/footer.blade.php ENDPATH**/ ?>

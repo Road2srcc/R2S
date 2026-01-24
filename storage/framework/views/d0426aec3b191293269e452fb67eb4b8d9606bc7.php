@@ -47,53 +47,24 @@
 <?php endif; ?>
     <?php endif; ?>
 
-    <!--Categories-->
-    <?php if($homePageSettings->enable_categories): ?>
-        <?php if (isset($component)) { $__componentOriginal18c84cce4a0aa799358027651cc2fcff0a147f1d = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Categories::class, []); ?>
-<?php $component->withName('categories'); ?>
+    <!--Partner CTA Section-->
+    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.partner','data' => []]); ?>
+<?php $component->withName('partner'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes([]); ?>
-<?php if (isset($__componentOriginal18c84cce4a0aa799358027651cc2fcff0a147f1d)): ?>
-<?php $component = $__componentOriginal18c84cce4a0aa799358027651cc2fcff0a147f1d; ?>
-<?php unset($__componentOriginal18c84cce4a0aa799358027651cc2fcff0a147f1d); ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-    <?php endif; ?>
+
+    <!--Categories-->
+
 
     <!--Stats-->
-    <?php if($homePageSettings->enable_stats): ?>
-        <?php if (isset($component)) { $__componentOriginal8365f75f4f90ed1df159db6f78dcfa5518b6b568 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Stats::class, []); ?>
-<?php $component->withName('stats'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes([]); ?>
-<?php if (isset($__componentOriginal8365f75f4f90ed1df159db6f78dcfa5518b6b568)): ?>
-<?php $component = $__componentOriginal8365f75f4f90ed1df159db6f78dcfa5518b6b568; ?>
-<?php unset($__componentOriginal8365f75f4f90ed1df159db6f78dcfa5518b6b568); ?>
-<?php endif; ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-    <?php endif; ?>
-
-    <!--Testimonials-->
-    <?php if($homePageSettings->enable_testimonials): ?>
-        <?php if (isset($component)) { $__componentOriginal99843580f067249f9ed6ac259729d2bf4b8605e4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\Testimonials::class, []); ?>
-<?php $component->withName('testimonials'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes([]); ?>
-<?php if (isset($__componentOriginal99843580f067249f9ed6ac259729d2bf4b8605e4)): ?>
-<?php $component = $__componentOriginal99843580f067249f9ed6ac259729d2bf4b8605e4; ?>
-<?php unset($__componentOriginal99843580f067249f9ed6ac259729d2bf4b8605e4); ?>
-<?php endif; ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-    <?php endif; ?>
 
     <!--CTA-->
     <?php if($homePageSettings->enable_cta): ?>

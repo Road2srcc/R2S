@@ -16,20 +16,13 @@
         <x-features />
     @endif
 
+    <!--Partner CTA Section-->
+    <x-partner />
+
     <!--Categories-->
-    @if ($homePageSettings->enable_categories)
-        <x-categories />
-    @endif
+
 
     <!--Stats-->
-    @if ($homePageSettings->enable_stats)
-        <x-stats />
-    @endif
-
-    <!--Testimonials-->
-    @if ($homePageSettings->enable_testimonials)
-        <x-testimonials />
-    @endif
 
     <!--CTA-->
     @if ($homePageSettings->enable_cta)
